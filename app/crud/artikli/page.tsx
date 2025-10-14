@@ -17,22 +17,19 @@ const ArtikliPage = () => {
     useEffect(() => {
         const fetchArtikli = async () => {
             const response = await fetch('/api/test');
+            if (!response.ok) {
+                console.error('Failed to fetch artikli data');
+                return;
+            }
             const artikliData = await response.json();
             setData(artikliData);
+            console.log('Fetched artikli data', artikliData);
         };
         fetchArtikli();
+
     }, []);
 
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => setError(null), 3000);
-            return () => clearTimeout(timer);
-        }
-        if (success) {
-            const timer = setTimeout(() => setSuccess(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [error, success]);
+
 
     const handleDelete = async (id: string) => {
         const response = await fetch(`/api/test/${id}`, { method: 'DELETE' });

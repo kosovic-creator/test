@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
   const artikli = await prisma.artikli.findMany();
+  console.log('GET /api/test called, artikli:', artikli);
   return NextResponse.json(artikli);
 }
 export async function POST(request: Request) {
