@@ -6,6 +6,9 @@ type Artikal = {
     id: string;
     naziv: string;
     cijena: number;
+    detalji?: {
+        opis: string;
+    };
 };
 
 const ArtikliPage = () => {
@@ -55,14 +58,20 @@ const ArtikliPage = () => {
                         <tr>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Naziv</th>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Cijena</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Opis</th>
                             <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {data.map((artikal) => (
-                            <tr key={artikal.id} className="hover:bg-gray-50">
+                            <tr key={artikal.id}>
                                 <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
                                 <td className="px-6 py-4 text-gray-900">{artikal.cijena.toFixed(2)}</td>
+                                <td className="px-6 py-4 text-gray-900">
+                                    {Array.isArray(artikal.detalji)
+                                        ? artikal.detalji.map(detalj => detalj.opis)
+                                        : ''}
+                                </td>
                                 <td className="px-6 py-4 text-center space-x-2">
                                     <button
                                         type="button"

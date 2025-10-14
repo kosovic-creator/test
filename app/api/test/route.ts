@@ -3,9 +3,23 @@ import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
-  const artikli = await prisma.artikli.findMany();
-  console.log('GET /api/test called, artikli:', artikli);
-  return NextResponse.json(artikli);
+  try {
+    const artikli = await prisma.artikli.findMany({
+      select: {
+       id: true,
+       naziv: true,
+       cijena: true,
+       detalji: { select: {  opis: true } }
+    }
+    });
+
+    return new Response(JSON.stringify(artikli), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response('Error fetching artikli', { status: 500 });
+  }
 }
 export async function POST(request: Request) {
   const data = await request.json();

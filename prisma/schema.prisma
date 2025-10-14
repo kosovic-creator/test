@@ -13,8 +13,16 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- model Artikli{
-  id  String @id @default(uuid())
-  naziv String?
-  cijena Int?
- }
+model Artikli {
+  id      String    @id @default(uuid())
+  naziv   String?
+  cijena  Int?
+  detalji Detalji[]
+}
+
+model Detalji {
+  id        String  @id @default(uuid())
+  opis      String?
+  artikliId String
+  artikli   Artikli @relation(fields: [artikliId], references: [id], onDelete: Cascade)
+}
