@@ -40,14 +40,31 @@ const ArtikliPage = () => {
         setError(false);
         setSuccess(true);
         if (data.error) return;
-        setTimeout(() =>  setData(prev => prev.filter(a => a.id !== id)), 4000);
+        setTimeout(() => setData(prev => prev.filter(a => a.id !== id)), 4000);
+    };
+
+    const [form, setForm] = useState({
+        id: '',
+        naziv: '',
+        cijena: 0,
+        opis: ''
+    });
+
+    const handleEdit = (artikal: Artikal) => {
+        setForm({
+            id: artikal.id,
+            naziv: artikal.naziv,
+            cijena: artikal.cijena,
+            opis: artikal.detalji?.opis ?? ''
+        });
+        router.push(`/crud/artikli/izmjeni/${artikal.id}`);
     };
 
     return (
         <div className="max-w-5xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-900">Artikli Page</h1>
             <button
-                onClick={() => router.push('/test/crud/artikli/dodaj')}
+                onClick={() => router.push('/crud/artikli/dodaj')}
                 className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
             >
                 Create
@@ -68,14 +85,12 @@ const ArtikliPage = () => {
                                 <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
                                 <td className="px-6 py-4 text-gray-900">{artikal.cijena.toFixed(2)}</td>
                                 <td className="px-6 py-4 text-gray-900">
-                                    {Array.isArray(artikal.detalji)
-                                        ? artikal.detalji.map(detalj => detalj.opis)
-                                        : ''}
+                                    {artikal.detalji?.opis ?? ''}
                                 </td>
                                 <td className="px-6 py-4 text-center space-x-2">
                                     <button
                                         type="button"
-                                        onClick={() => router.push(`/test/crud/artikli/izmjeni/${artikal.id}`)}
+                                        onClick={() => handleEdit(artikal)}
                                         className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
                                     >
                                         Edit

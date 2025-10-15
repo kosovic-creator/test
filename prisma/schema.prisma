@@ -14,15 +14,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model Artikli {
-  id      String    @id @default(uuid())
+  id      String   @id @default(uuid())
   naziv   String?
   cijena  Int?
-  detalji Detalji[]
+  detalji Detalji?
 }
 
 model Detalji {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   opis      String?
-  artikliId String
-  artikli   Artikli @relation(fields: [artikliId], references: [id], onDelete: Cascade)
+  artikliId String   @unique
+  artikli   Artikli  @relation(fields: [artikliId], references: [id], onDelete: Cascade)
 }

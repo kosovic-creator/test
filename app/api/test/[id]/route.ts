@@ -14,7 +14,15 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
     const { id } = await context.params; // await je obavezan!
     try {
-        const artikal = await prisma.artikli.findUnique({ where: { id } });
+        const artikal = await prisma.artikli.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                naziv: true,
+                cijena: true,
+                detalji: { select: { id: true, opis: true } }
+            }
+        });
         if (!artikal) {
             return NextResponse.json({ error: 'Artikal not found' }, { status: 404 });
         }
@@ -25,13 +33,20 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     }
 }
 export async function PUT(request: Request) {
-  const data = await request.json();
-  const updatedArtikal = await prisma.artikli.update({
-    where: { id: data.id },
-    data: {
-      naziv: data.naziv,
-      cijena: data.cijena,
-    },
-  });
-  return NextResponse.json(updatedArtikal);
+    const data = await request.json();
+    const updatedArtikal = await prisma.artikli.update({
+        where: { id: data.id },
+        data: {
+            naziv: data.naziv,
+            cijena: data.cijena,
+            detalji: {
+                update:
+                {
+                    data: { opis: data.opis }
+                }
+            }
+        },
+        include: { detalji: true }
+    });
+    return NextResponse.json(updatedArtikal);
 }

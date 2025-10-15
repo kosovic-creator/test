@@ -1,32 +1,39 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
+interface ArtikalForm {
+  id: string;
+  naziv: string;
+  cijena: number;
+  opis: string;
+}
+
 const IzmjenaPage = () => {
-  const [form, setForm] = React.useState({
+  const [form, setForm] = useState({
     id: '',
     naziv: '',
     cijena: 0,
+    opis: '',
   });
   const params = useParams();
   const router = useRouter();
-  const [error, setError] = React.useState<boolean | null>(null);
-  const [success, setSuccess] = React.useState<boolean | null>(null);
+  const [error, setError] = useState<boolean | null>(null);
+  const [success, setSuccess] = useState<boolean | null>(null);
 
   useEffect(() => {
     const fetchArtikal = async () => {
       const response = await fetch(`/api/test/${params.id}`);
       const fetchedData = await response.json();
-      setForm(fetchedData);
+      setForm({
+        id: fetchedData.id ?? '',
+        naziv: fetchedData.naziv ?? '',
+        cijena: fetchedData.cijena ?? 0,
+        opis: fetchedData.detalji?.opis ?? ''
+      });
     };
     fetchArtikal();
   }, [params.id]);
-
-  interface ArtikalForm {
-    id: string;
-    naziv: string;
-    cijena: number;
-  }
 
   const handleEdit = async (id: string, form: ArtikalForm): Promise<void> => {
     try {
@@ -39,27 +46,32 @@ const IzmjenaPage = () => {
       });
 
       if (response.ok) {
-        const result: ArtikalForm = await response.json();
-        setForm(result);
+        const result = await response.json();
+        setForm({
+          id: result.id ?? '',
+          naziv: result.naziv ?? '',
+          cijena: result.cijena ?? 0,
+          opis: result.detalji?.opis ?? ''
+        });
         setSuccess(true);
-        setTimeout(() => router.push('/test/crud/artikli'), 4000);
+        setTimeout(() => router.push('/crud/artikli'), 4000);
       } else {
         setError(true);
       }
-    } catch (error) {
+    } catch {
       setError(true);
     }
   };
 
-  useEffect(() => {
-    if (error !== null || success !== null) {
-      const timer = setTimeout(() => {
-        setError(null);
-        setSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error, success]);
+  // useEffect(() => {
+  //   if (error !== null || success !== null) {
+  //     const timer = setTimeout(() => {
+  //       setError(null);
+  //       setSuccess(null);
+  //     }, 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [error, success]);
 
   return (
     <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
@@ -82,6 +94,15 @@ const IzmjenaPage = () => {
         className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Cijena"
       />
+      <input
+        type="text"
+        name="opis"
+        value={form.opis}
+        onChange={(e) => setForm({ ...form, opis: e.target.value })}
+        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Opis"
+      />
+
 
       <button
         onClick={() => {
@@ -96,10 +117,10 @@ const IzmjenaPage = () => {
 
       <div className="mt-4 min-h-[1.5rem]">
         {error && <p className="text-red-600 font-semibold">Greška prilikom učitavanja podataka</p>}
-        {success && <p className="text-green-600 font-semibold">Uspješno učitani podaci</p>}
+        {success && <p className="text-green-600 font-semibold">Podaci su uspješno sačuvani</p>}
       </div>
     </div>
   );
-}
+};
 
 export default IzmjenaPage;

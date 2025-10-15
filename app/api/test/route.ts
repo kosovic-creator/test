@@ -22,11 +22,16 @@ export async function GET() {
   }
 }
 export async function POST(request: Request) {
-  const data = await request.json();
+  const reqBody = await request.json();
   const newArtikal = await prisma.artikli.create({
     data: {
-      naziv: data.naziv,
-      cijena: data.cijena,
+      naziv: reqBody.naziv,
+      cijena: reqBody.cijena,
+      detalji: {
+        create: {
+          opis: reqBody.opis
+        }
+      }
     },
   });
   return NextResponse.json(newArtikal);
