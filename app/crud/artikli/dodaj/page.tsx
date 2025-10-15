@@ -2,17 +2,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 
-type Artikal = {
-  id: string | number;
-  naziv: string;
-  cijena: number;
-};
-
 const DodajArtikalPage = () => {
-  const [form, setForm] = useState<Artikal>({
-    id: '',
+  const [form, setForm] = useState({
     naziv: '',
     cijena: 0,
+    opis: ''
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -23,6 +17,18 @@ const DodajArtikalPage = () => {
     setForm({
       ...form,
       [name]: name === 'cijena' ? Number(value) : value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    await fetch('/api/test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        naziv: form.naziv,
+        cijena: form.cijena,
+        opis: form.opis
+      })
     });
   };
 
@@ -40,7 +46,7 @@ const DodajArtikalPage = () => {
         setError(null);
         setSuccess(true);
         setTimeout(() => {
-          router.push('/test/crud/artikli');
+          router.push('/crud/artikli');
         }, 4000);
       }
     } catch {
@@ -54,21 +60,23 @@ const DodajArtikalPage = () => {
 
       <input
         type="text"
-        placeholder="Naziv"
-        name="naziv"
         value={form.naziv}
-        onChange={handleChange}
+        onChange={e => setForm({ ...form, naziv: e.target.value })}
         className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <input
         type="number"
-        placeholder="Cijena"
-        name="cijena"
         value={form.cijena}
-        onChange={handleChange}
+        onChange={e => setForm({ ...form, cijena: Number(e.target.value) })}
         className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
+      <input
+        type="text"
+        value={form.opis}
+        onChange={e => setForm({ ...form, opis: e.target.value })}
+        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
       <button
         onClick={handleAddArtikal}
         className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold"
