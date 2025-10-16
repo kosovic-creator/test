@@ -20,7 +20,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
                 id: true,
                 naziv: true,
                 cijena: true,
-                detalji: { select: { id: true, opis: true } }
+                detalji: { select: { opis: true } }
             }
         });
         if (!artikal) {
@@ -28,10 +28,10 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
         }
         return NextResponse.json(artikal);
     } catch (error) {
-        console.error(error);
         return NextResponse.json({ error: 'Fetch failed' }, { status: 500 });
     }
 }
+
 export async function PUT(request: Request) {
     const data = await request.json();
     const updatedArtikal = await prisma.artikli.update({

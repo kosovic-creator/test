@@ -9,7 +9,9 @@ export async function GET() {
        id: true,
        naziv: true,
        cijena: true,
-       detalji: { select: {  opis: true } }
+       detalji: { select: {  opis: true } },
+       //ovo je za relaciju sa korisnici tabelom Korisnik  Jedan korisnik može imati više artikala(one-to-many)
+       korisnici: { select: { ime: true, prezime: true, email: true } }
     }
     });
 
