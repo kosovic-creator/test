@@ -4,11 +4,15 @@
     "edit": "Izmijeni artikal",
     "delete": "Obriši artikal",
     "details": "Detalji artikla",
+    "save_changes": "Sačuvaj izmjene",
+    "error_loading_data": "Greška prilikom učitavanja podataka",
+    "data_saved_successfully": "Podaci su uspješno sačuvani",
     "name": "Naziv",
     "price": "Cijena",
     "description": "Opis",
     "actions": "Akcije",
     "error": "Artikal nije dodat!",
-    "success": "Artikal uspješno dodat!"
+    "success": "Artikal uspješno dodat!",
+    "back_to_artikli": "Nazad na artikle"
 
 }

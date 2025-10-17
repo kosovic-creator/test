@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import i18n from '@/app/i18n/config';
 import { useTranslation } from 'react-i18next';
 
 const DodajArtikalPage = () => {
@@ -13,8 +12,8 @@ const DodajArtikalPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const router = useRouter();
- const { t } = useTranslation('artikli');
-const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
+  const { t } = useTranslation('artikli');
+  const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

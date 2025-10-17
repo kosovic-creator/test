@@ -6,6 +6,8 @@ import artikli_en from './locales/en/artikli.json';
 import artikli_sr from './locales/sr/artikli.json';
 import korisnici_en from './locales/en/korisnici.json';
 import korisnici_sr from './locales/sr/korisnici.json';
+import common_en from './locales/en/common.json';
+import common_sr from './locales/sr/common.json';
 
 // Jednostavna konfiguracija i18next-a
 i18n
@@ -16,10 +18,12 @@ i18n
       en: {
         artikli: artikli_en,
         korisnici: korisnici_en,
+        common: common_en
       },
       sr: {
         artikli: artikli_sr,
         korisnici: korisnici_sr,
+        common: common_sr
       },
     },
 

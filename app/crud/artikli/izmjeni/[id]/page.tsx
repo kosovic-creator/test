@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next';
 
 interface ArtikalForm {
   id: string;
@@ -20,10 +21,11 @@ const IzmjenaPage = () => {
   const router = useRouter();
   const [error, setError] = useState<boolean | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
+  const { t } = useTranslation('artikli');
 
   useEffect(() => {
     const fetchArtikal = async () => {
-      const response = await fetch(`/api/test/artikli/${params.id}`);
+      const response = await fetch(`/api/test/artikli/${params.id}?lang=${new URLSearchParams(window.location.search).get('lang') || 'sr'}`);
       const fetchedData = await response.json();
       setForm({
         id: fetchedData.id ?? '',
@@ -63,19 +65,10 @@ const IzmjenaPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (error !== null || success !== null) {
-  //     const timer = setTimeout(() => {
-  //       setError(null);
-  //       setSuccess(null);
-  //     }, 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [error, success]);
 
   return (
     <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900">Detalji artikla</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('details')}</h2>
 
       <input
         type="text"
@@ -112,12 +105,12 @@ const IzmjenaPage = () => {
         }}
         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold w-full"
       >
-        Spremi izmjene
+       {t('save_changes')}
       </button>
 
       <div className="mt-4 min-h-[1.5rem]">
-        {error && <p className="text-red-600 font-semibold">Greška prilikom učitavanja podataka</p>}
-        {success && <p className="text-green-600 font-semibold">Podaci su uspješno sačuvani</p>}
+        {error && <p className="text-red-600 font-semibold">{t('error_loading_data')}</p>}
+        {success && <p className="text-green-600 font-semibold">{t('data_saved_successfully')}</p>}
       </div>
     </div>
   );
