@@ -1,6 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
+import i18n from '@/app/i18n/config';
+import { useTranslation } from 'react-i18next';
 
 const DodajArtikalPage = () => {
   const [form, setForm] = useState({
@@ -11,6 +13,8 @@ const DodajArtikalPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const router = useRouter();
+ const { t } = useTranslation('artikli');
+const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,7 +25,7 @@ const DodajArtikalPage = () => {
   };
 
   const handleSubmit = async () => {
-    await fetch('/api/test', {
+    await fetch('/api/test/artikli?lang=' + lang, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -34,7 +38,7 @@ const DodajArtikalPage = () => {
 
   const handleAddArtikal = async () => {
     try {
-      const res = await fetch("/api/test", {
+      const res = await fetch("/api/test/artikli?lang=" + lang, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -56,7 +60,7 @@ const DodajArtikalPage = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900">Dodaj Artikal</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('create')}</h2>
 
       <input
         type="text"
@@ -81,12 +85,12 @@ const DodajArtikalPage = () => {
         onClick={handleAddArtikal}
         className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold"
       >
-        Dodaj novi artikal
+        {t('create')}
       </button>
 
       <div className="mt-4 min-h-[1.5rem]">
-        {error && <div className="text-red-600 font-semibold">Artikal nije dodat!</div>}
-        {success && <div className="text-green-600 font-semibold">Artikal uspješno dodat!</div>}
+        {error && <div className="text-red-600 font-semibold">{t('error')}</div>}
+        {success && <div className="text-green-600 font-semibold">{t('success')}</div>}
       </div>
     </div>
   );

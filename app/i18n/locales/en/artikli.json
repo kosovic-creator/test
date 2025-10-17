@@ -1,0 +1,13 @@
+{
+    "title": "Articles",
+    "create": "Create Article",
+    "edit": "Edit Article",
+    "delete": "Delete Article",
+    "details": "Article Details",
+    "name": "Name",
+    "price": "Price",
+    "description": "Description",
+    "actions": "Actions",
+    "error": "Article not added!",
+    "success": "Article successfully added!"
+}

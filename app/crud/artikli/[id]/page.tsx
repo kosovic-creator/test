@@ -1,5 +1,6 @@
 'use client'
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react'
 
 type Artikal = {
@@ -9,15 +10,11 @@ type Artikal = {
 
 const Page = () => {
   const [data, setData] = useState<Artikal | null>(null);
-  // const id = typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : '';
-//   const searchParams = useSearchParams(); ovo je kad.   ?=1
-// const id = searchParams.get('id');
-const id= useParams().id;
+  const id= useParams().id;
 
-  console.log('id:', id);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/test/' + id);
+      const response = await fetch('/api/test/artikli/' + id);
       if (!response.ok) {
         console.error('Failed to fetch artikal data');
         return;
@@ -29,17 +26,18 @@ const id= useParams().id;
   }, [id]);
 
   return (
-    <div>
+    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <Link href="/crud/artikli">Back to Artikli</Link>
       {data ? (
         <div>
-          <h1>{data.naziv}</h1>
-          <p>Cijena: {data.cijena}</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">{data.naziv}</h1>
+          <p className="text-lg text-gray-600">Cijena: <span className="font-semibold">{data.cijena} €</span></p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p className="text-center text-gray-500 italic">Loading...</p>
       )}
     </div>
   );
-}
+};
 
 export default Page

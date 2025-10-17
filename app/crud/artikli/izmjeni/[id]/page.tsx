@@ -23,7 +23,7 @@ const IzmjenaPage = () => {
 
   useEffect(() => {
     const fetchArtikal = async () => {
-      const response = await fetch(`/api/test/${params.id}`);
+      const response = await fetch(`/api/test/artikli/${params.id}`);
       const fetchedData = await response.json();
       setForm({
         id: fetchedData.id ?? '',
@@ -37,7 +37,7 @@ const IzmjenaPage = () => {
 
   const handleEdit = async (id: string, form: ArtikalForm): Promise<void> => {
     try {
-      const response: Response = await fetch(`/api/test/${id}`, {
+      const response: Response = await fetch(`/api/test/artikli/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

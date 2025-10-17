@@ -1,6 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 
 type Artikal = {
     id: string;
@@ -12,35 +13,49 @@ type Artikal = {
 };
 
 const ArtikliPage = () => {
+    const { t } = useTranslation('artikli');
     const router = useRouter();
     const [data, setData] = useState<Artikal[]>([]);
     const [error, setError] = useState<boolean | null>(null);
     const [success, setSuccess] = useState<boolean | null>(null);
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const lang = searchParams?.get('lang') || 'sr';
+
 
     useEffect(() => {
         const fetchArtikli = async () => {
-            const response = await fetch('/api/test');
-            if (!response.ok) {
-                console.error('Failed to fetch artikli data');
-                return;
+            try {
+                // updated to match API route under /api/test/artikli
+                const response = await fetch(`/api/test/artikli?lang=${lang}`);
+                if (!response.ok) {
+                    console.error('Failed to fetch artikli data', response.status, response.statusText);
+                    setError(true);
+                    return;
+                }
+                const artikliData = await response.json();
+                setData(artikliData);
+                setError(false);
+                console.log('Fetched artikli data', artikliData);
+            } catch (err) {
+                console.error('Error fetching artikli data', err);
+                setError(true);
             }
-            const artikliData = await response.json();
-            setData(artikliData);
-            console.log('Fetched artikli data', artikliData);
         };
         fetchArtikli();
 
-    }, []);
+    }, [lang]);
 
 
 
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/test/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/test/artikli/${id}`, { method: 'DELETE' });
         const data = await response.json();
         setError(false);
         setSuccess(true);
+
         if (data.error) return;
-        setTimeout(() => setData(prev => prev.filter(a => a.id !== id)), 4000);
+        setTimeout(() => setData(prev => prev.filter(a => a.id !== id)), 2000);
+        setTimeout(() => setSuccess(false), 1000);
     };
 
     const [form, setForm] = useState({
@@ -62,21 +77,21 @@ const ArtikliPage = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6 text-gray-900">Artikli Page</h1>
+            <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
             <button
                 onClick={() => router.push('/crud/artikli/dodaj')}
                 className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
             >
-                Create
+                {t('create')}
             </button>
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Naziv</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Cijena</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Opis</th>
-                            <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">Actions</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('name')}</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('price')}</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('description')}</th>
+                            <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">{t('actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -93,14 +108,21 @@ const ArtikliPage = () => {
                                         onClick={() => handleEdit(artikal)}
                                         className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
                                     >
-                                        Edit
+                                        {t('edit')}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => router.push(`/crud/artikli/${artikal.id}`)}
+                                        className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
+                                    >
+                                        {t('details')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => handleDelete(artikal.id)}
                                         className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
                                     >
-                                        Delete
+                                        {t('delete')}
                                     </button>
                                 </td>
                             </tr>

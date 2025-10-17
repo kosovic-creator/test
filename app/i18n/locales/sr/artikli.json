@@ -1,0 +1,14 @@
+{
+    "title": "Artikli",
+    "create": "Kreiraj artikal",
+    "edit": "Izmijeni artikal",
+    "delete": "Obriši artikal",
+    "details": "Detalji artikla",
+    "name": "Naziv",
+    "price": "Cijena",
+    "description": "Opis",
+    "actions": "Akcije",
+    "error": "Artikal nije dodat!",
+    "success": "Artikal uspješno dodat!"
+
+}

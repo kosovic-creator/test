@@ -2,7 +2,7 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const artikli = await prisma.artikli.findMany({
       select: {
@@ -14,6 +14,10 @@ export async function GET() {
        korisnici: { select: { ime: true, prezime: true, email: true } }
     }
     });
+
+    // Odredi jezik iz Accept-Language headera
+    const langHeader = request.headers.get('accept-language') || '';
+    const lang = langHeader.startsWith('en') ? 'en' : 'sr';
 
     return new Response(JSON.stringify(artikli), {
       status: 200,
