@@ -64,8 +64,6 @@ const IzmjenaPage = () => {
       setError(true);
     }
   };
-
-
   return (
     <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
       <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('details')}</h2>
@@ -95,8 +93,6 @@ const IzmjenaPage = () => {
         className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Opis"
       />
-
-
       <button
         onClick={() => {
           if (typeof params.id === 'string') {

@@ -6,8 +6,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     try {
         await prisma.artikli.delete({ where: { id } });
         return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error(error);
+    } catch {
+        console.error('Delete failed');
         return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
     }
 }
@@ -27,7 +27,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
             return NextResponse.json({ error: 'Artikal not found' }, { status: 404 });
         }
         return NextResponse.json(artikal);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Fetch failed' }, { status: 500 });
     }
 }

@@ -1,8 +1,12 @@
 {
+    "home": "Početna",
+    "back": "Nazad",
+    "test": "Test",
     "loading": "Učitavanje...",
     "error": "Došlo je do greške",
-    "success": "Operacija uspješna",
-    "back": "Nazad",
+    "success": "Operacija uspešna",
     "confirm": "Da li ste sigurni?",
-    "home": "Početna"
+    "menu": "Meni",
+    "logout": "Odjava",
+    "profile": "Profil"
 }

@@ -3,8 +3,6 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
-
-
 type Artikal = {
   naziv: string;
   cijena: number;
@@ -26,7 +24,7 @@ const Page = () => {
       setData(artikalData);
     };
     fetchData();
-  }, [id]);
+  }, [id, lang]);
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">

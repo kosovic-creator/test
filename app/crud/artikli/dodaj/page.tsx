@@ -15,25 +15,7 @@ const DodajArtikalPage = () => {
   const { t } = useTranslation('artikli');
   const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: name === 'cijena' ? Number(value) : value,
-    });
-  };
-
-  const handleSubmit = async () => {
-    await fetch('/api/test/artikli?lang=' + lang, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        naziv: form.naziv,
-        cijena: form.cijena,
-        opis: form.opis
-      })
-    });
-  };
+  // handleChange/handleSubmit were unused: inputs directly update form and handleAddArtikal is used
 
   const handleAddArtikal = async () => {
     try {

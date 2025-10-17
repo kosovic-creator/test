@@ -1,25 +1,20 @@
 'use client';
 import Link from 'next/link'
 import React, { useContext } from "react";
-import i18n from '@/app/i18n/config';
 import MyContext from './MyContext';
 import { useTranslation } from 'react-i18next';
+import i18n from '@/app/i18n/config';
 
 const Navbar = () => {
   const context = useContext(MyContext);
-  // router kept if you want to call router.refresh() later
-const { t } = useTranslation('common');
-const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
-
+  const { t } = useTranslation('common');
 
   const switchLang = async (lang: string) => {
     try {
       await i18n.changeLanguage(lang);
-      // Update URL without reloading the page
       const url = new URL(window.location.href);
       url.searchParams.set('lang', lang);
       window.history.replaceState({}, '', url.toString());
-
     } catch {
 
     }
@@ -28,7 +23,6 @@ const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location
   return (
     <>
       <p>kontext: {context ? context.value : 'N/A'}</p>
-
       <div style={{ padding: '10px', borderBottom: '1px solid #ccc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Test</h1>
         <ul style={{ display: 'flex', listStyle: 'none', padding: 0, alignItems: 'center' }}>
@@ -36,9 +30,22 @@ const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location
           <li style={{ marginRight: '10px' }}><Link href="/crud/artikli"><span className="home">{t('back')}</span></Link></li>
         </ul>
 
-        <div>
-          <button onClick={() => switchLang('sr')} style={{ marginRight: 8 }} aria-label="srpski">SR</button>
-          <button onClick={() => switchLang('en')} aria-label="english">EN</button>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => switchLang('sr')}
+            className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium"
+            aria-label="srpski"
+          >
+            SR
+          </button>
+          <button
+            onClick={() => switchLang('en')}
+            className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded text-sm font-medium"
+            aria-label="english"
+          >
+            EN
+          </button>
+
         </div>
       </div>
     </>

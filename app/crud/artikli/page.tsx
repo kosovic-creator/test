@@ -20,8 +20,6 @@ const ArtikliPage = () => {
     const [success, setSuccess] = useState<boolean | null>(null);
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const lang = searchParams?.get('lang') || 'sr';
-
-
     useEffect(() => {
         const fetchArtikli = async () => {
             try {
@@ -44,9 +42,6 @@ const ArtikliPage = () => {
         fetchArtikli();
 
     }, [lang]);
-
-
-
     const handleDelete = async (id: string) => {
         const response = await fetch(`/api/test/artikli/${id}`, { method: 'DELETE' });
         const data = await response.json();
@@ -58,20 +53,8 @@ const ArtikliPage = () => {
         setTimeout(() => setSuccess(false), 1000);
     };
 
-    const [form, setForm] = useState({
-        id: '',
-        naziv: '',
-        cijena: 0,
-        opis: ''
-    });
-
     const handleEdit = (artikal: Artikal) => {
-        setForm({
-            id: artikal.id,
-            naziv: artikal.naziv,
-            cijena: artikal.cijena,
-            opis: artikal.detalji?.opis ?? ''
-        });
+        // navigate to edit page; form state removed since it's unused here
         router.push(`/crud/artikli/izmjeni/${artikal.id}`);
     };
 

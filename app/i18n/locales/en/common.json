@@ -1,8 +1,12 @@
 {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "success": "Operation successful",
-    "back": "Back",
-    "confirm": "Are you sure?",
-    "home": "Home"
+  "home": "Home",
+  "back": "Back",
+  "test": "Test",
+  "loading": "Loading...",
+  "error": "An error occurred",
+  "success": "Operation successful",
+  "confirm": "Are you sure?",
+  "menu": "Menu",
+  "logout": "Logout",
+  "profile": "Profile"
 }
