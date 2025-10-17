@@ -13,6 +13,7 @@
     "actions": "Akcije",
     "error": "Artikal nije dodat!",
     "success": "Artikal uspješno dodat!",
-    "back_to_artikli": "Nazad na artikle"
+    "back_to_artikli": "Nazad na artikle",
+    "pricePdv": "Cijena sa Pdv"
 
 }

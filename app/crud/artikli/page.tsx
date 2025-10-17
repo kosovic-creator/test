@@ -7,6 +7,7 @@ type Artikal = {
     id: string;
     naziv: string;
     cijena: number;
+    cijenaDva: number | null;
     detalji?: {
         opis: string;
     };
@@ -73,6 +74,7 @@ const ArtikliPage = () => {
                         <tr>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('name')}</th>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('price')}</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('pricePdv')}</th>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('description')}</th>
                             <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">{t('actions')}</th>
                         </tr>
@@ -82,6 +84,7 @@ const ArtikliPage = () => {
                             <tr key={artikal.id}>
                                 <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
                                 <td className="px-6 py-4 text-gray-900">{artikal.cijena.toFixed(2)}</td>
+                                <td className="px-6 py-4 text-gray-900">{artikal.cijenaDva !== null ? artikal.cijenaDva.toFixed(2) : ''}</td>
                                 <td className="px-6 py-4 text-gray-900">
                                     {artikal.detalji?.opis ?? ''}
                                 </td>

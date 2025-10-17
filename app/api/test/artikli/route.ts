@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const artikli = await prisma.artikli.findMany({
+    const artikliRaw = await prisma.artikli.findMany({
       select: {
        id: true,
        naziv: true,
@@ -12,8 +12,13 @@ export async function GET() {
        detalji: { select: {  opis: true } },
        //ovo je za relaciju sa korisnici tabelom Korisnik  Jedan korisnik može imati više artikala(one-to-many)
        korisnici: { select: { ime: true, prezime: true, email: true } }
-    }
+      }
     });
+
+    const artikli = artikliRaw.map(a => ({
+      ...a,
+      cijenaDva: typeof a.cijena === 'number' ? a.cijena * 1.8 : null
+    }));
 
     return new Response(JSON.stringify(artikli), {
       status: 200,

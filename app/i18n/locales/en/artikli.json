@@ -13,5 +13,6 @@
     "actions": "Actions",
     "error": "Article not added!",
     "success": "Article successfully added!",
-    "back_to_artikli": "Back to Articles"
+    "back_to_artikli": "Back to Articles",
+    "pricePdv": "Price with VAT"
 }
