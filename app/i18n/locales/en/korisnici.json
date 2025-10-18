@@ -3,6 +3,7 @@
     "create": "Create User",
     "edit": "Edit User",
     "delete": "Delete User",
+    "saveChanges": "Save Changes",
     "details": "User Details",
     "list": "User List",
     "name": "Name",

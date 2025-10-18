@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
+
 
 export default function IzmeniArtikal() {
   const params = useParams();
   const artikalId = params?.id;
-
+const { t } = useTranslation("artikli");
   const [naziv, setNaziv] = useState("");
   const [opis, setOpis] = useState("");
   const [poruka, setPoruka] = useState<string | null>(null);
@@ -46,27 +48,27 @@ export default function IzmeniArtikal() {
       const data = await res.json();
 
       if (res.ok) {
-        setPoruka("Artikal uspešno ažuriran");
+        setPoruka(t('updateSuccess'));
       } else {
-        setPoruka(data.error || "Greška");
+        setPoruka(data.error || t('error'));
       }
     } catch {
-      setPoruka("Greška pri komunikaciji");
+      setPoruka(t('communicationError'));
     }
   }
 
-  if (!artikalId) return <p className="text-center mt-10 text-red-600">Artikal ID nije dostupan</p>;
+  if (!artikalId) return <p className="text-center mt-10 text-red-600">{t('articleIdNotAvailable')}</p>;
 
   return (
     <form
       onSubmit={handleUpdate}
       className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md space-y-6"
     >
-      <h2 className="text-2xl font-semibold text-gray-800">Izmeni artikal</h2>
+      <h2 className="text-2xl font-semibold text-gray-800">{t('edit')}</h2>
 
       <div>
         <label htmlFor="naziv" className="block mb-1 text-sm font-medium text-gray-700">
-          Naziv
+          {t('name')}
         </label>
         <input
           id="naziv"
@@ -80,7 +82,7 @@ export default function IzmeniArtikal() {
 
       <div>
         <label htmlFor="opis" className="block mb-1 text-sm font-medium text-gray-700">
-          Opis
+          {t('description')}
         </label>
         <textarea
           id="opis"
@@ -94,7 +96,7 @@ export default function IzmeniArtikal() {
         type="submit"
         className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
       >
-        Sačuvaj promene
+        {t('save_changes')}
       </button>
 
       {poruka && <p className="text-center text-sm text-gray-700">{poruka}</p>}
