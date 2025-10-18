@@ -35,10 +35,10 @@ export default function KorisnikPage() {
   }, []);
 
   async function handleDelete(id: number) {
-    if (!confirm("Da li ste sigurni da želite da obrišete korisnika?")) return;
+    // if (!confirm("Da li ste sigurni da želite da obrišete korisnika?")) return;
 
     try {
-      const res = await fetch(`/api/korisnici/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/test/korisnik/${id}`, { method: "DELETE" });
       const data = await res.json();
       if (res.ok) {
         setSuccess("Korisnik uspešno obrisan");
@@ -53,6 +53,7 @@ export default function KorisnikPage() {
     setTimeout(() => {
       setError(null);
       setSuccess(null);
+      router.push("/crud/korisnici");
     }, 3000);
   }
 

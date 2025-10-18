@@ -1,41 +1,74 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id: idStr } = await context.params;
+    const id = Number(idStr);
+    if (!Number.isInteger(id) || id <= 0) {
+      return NextResponse.json({ error: "Nevažeći ili nedostajući id." }, { status: 400 });
+    }
+
     const korisnik = await prisma.korisnik.findUnique({
-      where: { id: Number(params.id) },
-      select: { id: true, ime: true, email: true }, // samo ova tri polja
+      where: { id },
+      select: { id: true, ime: true, email: true },
     });
-    if (!korisnik)
-      return NextResponse.json({ error: "Korisnik nije pronađen." }, { status: 404 });
+
+    if (!korisnik) {
+      return NextResponse.json(
+        { error: "Korisnik nije pronađen." },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(korisnik);
-  } catch {
-    return NextResponse.json({ error: "Greška pri učitavanju korisnika" }, { status: 500 });
+  } catch (err) {
+    console.error("GET /api/korisnici/[id] error:", err);
+    return NextResponse.json(
+      { error: "Greška pri učitavanju korisnika" },
+      { status: 500 }
+    );
   }
 }
 
 
-
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { email, ime } = await req.json();
+    const { id: idStr } = await context.params;
+    const id = Number(idStr);
+    if (!Number.isInteger(id) || id <= 0) {
+      return NextResponse.json({ error: "Nevažeći ili nedostajući id." }, { status: 400 });
+    }
+
+    const { email, ime } = await request.json();
+    if (!email || !ime) {
+      return NextResponse.json({ error: "Nedostaju podaci za ažuriranje." }, { status: 400 });
+    }
+
     const korisnik = await prisma.korisnik.update({
-      where: { id: Number(params.id) },
+      where: { id },
       data: { email, ime },
     });
     return NextResponse.json(korisnik);
-  } catch {
+  } catch (err) {
+    console.error("PUT /api/test/korisnik/[id] error:", err);
     return NextResponse.json({ error: "Greška pri ažuriranju" }, { status: 500 });
   }
 }
-
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    await prisma.korisnik.delete({ where: { id: Number(params.id) } });
+    const { id: idStr } = await context.params;
+    const id = Number(idStr);
+    if (!Number.isInteger(id) || id <= 0) {
+      return NextResponse.json({ error: "Nevažeći ili nedostajući id." }, { status: 400 });
+    }
+
+    await prisma.korisnik.delete({ where: { id } });
     return NextResponse.json({ message: "Korisnik je obrisan." });
-  } catch {
-    return NextResponse.json({ error: "Greška pri brisanju" }, { status: 500 });
+  } catch (err) {
+    console.error("DELETE /api/test/korisnik/[id] error:", err);
+    return NextResponse.json({ error: "Greška pri brisanju korisnika" }, { status: 500 });
   }
 }
+
+
