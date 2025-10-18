@@ -1,80 +1,103 @@
-'use client'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+"use client";
 
-const DodajArtikalPage = () => {
-  const [form, setForm] = useState({
-    naziv: '',
-    cijena: 0,
-    opis: ''
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-  const router = useRouter();
-  const { t } = useTranslation('artikli');
-  const lang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') || 'sr' : 'sr';
+import { useState } from "react";
 
-  // handleChange/handleSubmit were unused: inputs directly update form and handleAddArtikal is used
+export default function DodajArtikal() {
+  const [naziv, setNaziv] = useState("");
+  const [opis, setOpis] = useState("");
+  const [korisnikId, setKorisnikId] = useState("");
+  const [poruka, setPoruka] = useState<string | null>(null);
 
-  const handleAddArtikal = async () => {
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    const id = Number(korisnikId);
+    if (isNaN(id) || id <= 0) {
+      setPoruka("Neispravan korisnički ID");
+      return;
+    }
+
     try {
-      const res = await fetch("/api/test/artikli?lang=" + lang, {
+      const res = await fetch("/api/test/artikli", {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naziv, opis, korisnikId: id }),
       });
-      const result = await res.json();
-      if (!res.ok) {
-        setError(result.error || 'Error occurred while adding artikal');
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPoruka("Artikal uspešno dodat");
+        setNaziv("");
+        setOpis("");
+        setKorisnikId("");
       } else {
-        setError(null);
-        setSuccess(true);
-        setTimeout(() => {
-          router.push('/crud/artikli');
-        }, 4000);
+        setPoruka(data.error || "Greška");
       }
     } catch {
-      setError('Error occurred while adding artikal');
+      setPoruka("Greška pri komunikaciji");
     }
-  };
+  }
 
   return (
-    <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('create')}</h2>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Dodaj artikal</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="naziv" className="block text-sm font-medium text-gray-700 mb-1">
+                    Naziv
+                  </label>
+                  <input
+                    id="naziv"
+                    type="text"
+                    placeholder="Unesi naziv"
+                    value={naziv}
+                    onChange={(e) => setNaziv(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
 
-      <input
-        type="text"
-        value={form.naziv}
-        onChange={e => setForm({ ...form, naziv: e.target.value })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="number"
-        value={form.cijena}
-        onChange={e => setForm({ ...form, cijena: Number(e.target.value) })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+                <div>
+                  <label htmlFor="opis" className="block text-sm font-medium text-gray-700 mb-1">
+                    Opis
+                  </label>
+                  <textarea
+                    id="opis"
+                    placeholder="Unesi opis"
+                    value={opis}
+                    onChange={(e) => setOpis(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
 
-      <input
-        type="text"
-        value={form.opis}
-        onChange={e => setForm({ ...form, opis: e.target.value })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        onClick={handleAddArtikal}
-        className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold"
-      >
-        {t('create')}
-      </button>
+                <div>
+                  <label htmlFor="korisnikId" className="block text-sm font-medium text-gray-700 mb-1">
+                    Korisnik ID
+                  </label>
+                  <input
+                    id="korisnikId"
+                    type="number"
+                    placeholder="Unesi korisnički ID"
+                    value={korisnikId}
+                    onChange={(e) => setKorisnikId(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
 
-      <div className="mt-4 min-h-[1.5rem]">
-        {error && <div className="text-red-600 font-semibold">{t('error')}</div>}
-        {success && <div className="text-green-600 font-semibold">{t('success')}</div>}
-      </div>
-    </div>
-  );
-}
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Dodaj
+                  </button>
+                </div>
 
-export default DodajArtikalPage;
+                {poruka && <p className="text-sm text-red-600">{poruka}</p>}
+              </form>
+            </div>
+          );
+        }

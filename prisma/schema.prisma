@@ -13,29 +13,20 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model Korisnici {
-  id       String  @id @default(uuid())
-  ime      String?
-  prezime  String?
-  email    String? @unique
-  lozinka  String?
-  artikli  Artikli[]
-
-}
- // ovo je za relaciju sa korisnici tabelom Korisnik  Jedan korisnik može imati više artikala(one-to-many)
-model Artikli {
-  id      String   @id @default(uuid())
-  naziv   String?
-  cijena  Int?
-  detalji Detalji?
-  korisniciId String?
-  korisnici   Korisnici? @relation(fields: [korisniciId], references: [id], onDelete: SetNull)
+model Korisnik {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  ime       String
+  artikli   Artikal[]
+  createdAt DateTime  @default(now())
 }
 
-model Detalji {
-  id        String   @id @default(uuid())
-  opis      String?
-  artikliId String   @unique
-  artikli   Artikli  @relation(fields: [artikliId], references: [id], onDelete: Cascade)
+model Artikal {
+  id         Int       @id @default(autoincrement())
+  naziv      String
+  opis       String?
+  korisnikId Int
+  korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
-

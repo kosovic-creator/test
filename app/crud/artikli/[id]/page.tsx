@@ -5,7 +5,10 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
 type Artikal = {
   naziv: string;
-  cijena: number;
+ opis: string;
+  korisnik?: {
+    ime: string;
+  }
 };
 
 const Page = () => {
@@ -32,7 +35,8 @@ const Page = () => {
       {data ? (
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-4">{data.naziv}</h1>
-          <p className="text-lg text-gray-600">{t('price')}: <span className="font-semibold">{data.cijena} €</span></p>
+          <p className="text-lg text-gray-600">{t('description')}: <span className="font-semibold">{data.opis}</span></p>
+          <p className="text-lg text-gray-600">{t('owner')}: <span className="font-semibold">{data.korisnik?.ime || ''}</span></p>
         </div>
       ) : (
         <p className="text-center text-gray-500 italic">Loading...</p>

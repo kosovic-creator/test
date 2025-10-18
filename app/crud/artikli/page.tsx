@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 type Artikal = {
     id: string;
     naziv: string;
-    cijena: number;
-    cijenaDva: number | null;
-    detalji?: {
-        opis: string;
-    };
+    opis?: string;
+
+    korisnik?: {
+       id: number;
+    }
 };
 
 const ArtikliPage = () => {
@@ -73,9 +73,10 @@ const ArtikliPage = () => {
                     <thead className="bg-gray-100">
                         <tr>
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('name')}</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('price')}</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('pricePdv')}</th>
+
+
                             <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('description')}</th>
+                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('korisnik')}</th>
                             <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">{t('actions')}</th>
                         </tr>
                     </thead>
@@ -83,11 +84,10 @@ const ArtikliPage = () => {
                         {data.map((artikal) => (
                             <tr key={artikal.id}>
                                 <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
-                                <td className="px-6 py-4 text-gray-900">{artikal.cijena.toFixed(2)}</td>
-                                <td className="px-6 py-4 text-gray-900">{artikal.cijenaDva !== null ? artikal.cijenaDva.toFixed(2) : ''}</td>
-                                <td className="px-6 py-4 text-gray-900">
-                                    {artikal.detalji?.opis ?? ''}
-                                </td>
+                                <td className="px-6 py-4 text-gray-900">{artikal.opis ?? ''}</td>
+
+
+                                <td className="px-6 py-4 text-gray-900">{artikal.korisnik ? <div className="id">{artikal.korisnik.id}</div> : ''}</td>
                                 <td className="px-6 py-4 text-center space-x-2">
                                     <button
                                         type="button"

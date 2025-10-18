@@ -1,52 +1,41 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
-export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
-    const { id } = await context.params; // await je obavezan!
-    try {
-        await prisma.artikli.delete({ where: { id } });
-        return NextResponse.json({ success: true });
-    } catch {
-        console.error('Delete failed');
-        return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
-    }
-}
-export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
-    const { id } = await context.params; // await je obavezan!
-    try {
-        const artikal = await prisma.artikli.findUnique({
-            where: { id },
-            select: {
-                id: true,
-                naziv: true,
-                cijena: true,
-                detalji: { select: { opis: true } }
-            }
-        });
-        if (!artikal) {
-            return NextResponse.json({ error: 'Artikal not found' }, { status: 404 });
-        }
-        return NextResponse.json(artikal);
-    } catch {
-        return NextResponse.json({ error: 'Fetch failed' }, { status: 500 });
-    }
-}
-
-export async function PUT(request: Request) {
-    const data = await request.json();
-    const updatedArtikal = await prisma.artikli.update({
-        where: { id: data.id },
-        data: {
-            naziv: data.naziv,
-            cijena: data.cijena,
-            detalji: {
-                update:
-                {
-                    data: { opis: data.opis }
-                }
-            }
-        },
-        include: { detalji: true }
+export async function GET(_: Request, { params }: { params: { id: string } }) {
+  try {
+    const artikal = await prisma.artikal.findUnique({
+      where: { id: Number(params.id) },
+      include: { korisnik: true },
     });
-    return NextResponse.json(updatedArtikal);
+    if (!artikal)
+      return NextResponse.json({ error: "Artikal nije pronađen." }, { status: 404 });
+    return NextResponse.json(artikal);
+  } catch {
+    return NextResponse.json({ error: "Greška." }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  try {
+    const data = await req.json();
+    const { naziv, opis } = data;
+
+    const artikal = await prisma.artikal.update({
+      where: { id: Number(params.id) },
+      data: { naziv, opis },
+    });
+
+    return NextResponse.json(artikal);
+  } catch {
+    return NextResponse.json({ error: "Greška pri ažuriranju." }, { status: 500 });
+  }
+}
+
+export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+  try {
+    await prisma.artikal.delete({ where: { id: Number(params.id) } });
+    return NextResponse.json({ message: "Artikal je obrisan." });
+  } catch {
+    return NextResponse.json({ error: "Greška pri brisanju." }, { status: 500 });
+  }
 }

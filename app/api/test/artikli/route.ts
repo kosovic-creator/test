@@ -1,53 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import prisma from '@/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const artikliRaw = await prisma.artikli.findMany({
-      select: {
-       id: true,
-       naziv: true,
-       cijena: true,
-       detalji: { select: {  opis: true } },
-       //ovo je za relaciju sa korisnici tabelom Korisnik  Jedan korisnik može imati više artikala(one-to-many)
-       korisnici: { select: { ime: true, prezime: true, email: true } }
-      }
+    const artikli = await prisma.artikal.findMany({
+      include: { korisnik: true },
     });
-
-    const artikli = artikliRaw.map(a => ({
-      ...a,
-      cijenaDva: typeof a.cijena === 'number' ? a.cijena * 1.8 : null
-    }));
-
-    return new Response(JSON.stringify(artikli), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return NextResponse.json(artikli);
   } catch (error) {
-    return new Response('Error fetching artikli', { status: 500 });
+    return NextResponse.json({ error: "Greška pri učitavanju." }, { status: 500 });
   }
 }
-export async function POST(request: Request) {
-  const reqBody = await request.json();
-  const newArtikal = await prisma.artikli.create({
-    data: {
-      naziv: reqBody.naziv,
-      cijena: reqBody.cijena,
-      detalji: {
-        create: {
-          opis: reqBody.opis
-        }
-      }
-    },
-  });
-  return NextResponse.json(newArtikal);
+
+export async function POST(req: Request) {
+  try {
+    const data = await req.json();
+    const { naziv, opis, korisnikId } = data;
+
+    if (!naziv || !korisnikId)
+      return NextResponse.json({ error: "Nedostaju podaci." }, { status: 400 });
+
+    const artikal = await prisma.artikal.create({
+      data: { naziv, opis, korisnikId },
+      include: { korisnik: true },
+    });
+
+
+    return NextResponse.json(artikal, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: "Greška prilikom kreiranja." }, { status: 500 });
+  }
 }
-
-// export async function GET(request: NextRequest) {
-//   const artikalId = request.nextUrl.searchParams.get('artikalId');
-//   if (!artikalId) return NextResponse.json({ error: 'Missing artikalId' }, { status: 400 });
-//   const podaci = await prisma.artikli.findMany({ where: { id: artikalId } });
-//   return NextResponse.json(podaci);
-// }
-

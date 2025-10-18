@@ -1,115 +1,103 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { useTranslation } from 'react-i18next';
+"use client";
 
-interface ArtikalForm {
-  id: string;
-  naziv: string;
-  cijena: number;
-  opis: string;
-}
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
-const IzmjenaPage = () => {
-  const [form, setForm] = useState({
-    id: '',
-    naziv: '',
-    cijena: 0,
-    opis: '',
-  });
+export default function IzmeniArtikal() {
   const params = useParams();
-  const router = useRouter();
-  const [error, setError] = useState<boolean | null>(null);
-  const [success, setSuccess] = useState<boolean | null>(null);
-  const { t } = useTranslation('artikli');
+  const artikalId = params?.id;
+
+  const [naziv, setNaziv] = useState("");
+  const [opis, setOpis] = useState("");
+  const [poruka, setPoruka] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchArtikal = async () => {
-      const response = await fetch(`/api/test/artikli/${params.id}?lang=${new URLSearchParams(window.location.search).get('lang') || 'sr'}`);
-      const fetchedData = await response.json();
-      setForm({
-        id: fetchedData.id ?? '',
-        naziv: fetchedData.naziv ?? '',
-        cijena: fetchedData.cijena ?? 0,
-        opis: fetchedData.detalji?.opis ?? ''
-      });
-    };
+    if (!artikalId) return;
+
+    async function fetchArtikal() {
+      try {
+        const res = await fetch(`/api/test/artikli/${artikalId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setNaziv(data.naziv);
+          setOpis(data.opis || "");
+        } else {
+          setPoruka(data.error || "Greška pri učitavanju");
+        }
+      } catch {
+        setPoruka("Greška pri komunikaciji");
+      }
+    }
+
     fetchArtikal();
-  }, [params.id]);
+  }, [artikalId]);
 
-  const handleEdit = async (id: string, form: ArtikalForm): Promise<void> => {
+  async function handleUpdate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!artikalId) return;
+
     try {
-      const response: Response = await fetch(`/api/test/artikli/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
+      const res = await fetch(`/api/test/artikli/${artikalId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naziv, opis }),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setForm({
-          id: result.id ?? '',
-          naziv: result.naziv ?? '',
-          cijena: result.cijena ?? 0,
-          opis: result.detalji?.opis ?? ''
-        });
-        setSuccess(true);
-        setTimeout(() => router.push('/crud/artikli'), 4000);
+      const data = await res.json();
+
+      if (res.ok) {
+        setPoruka("Artikal uspešno ažuriran");
       } else {
-        setError(true);
+        setPoruka(data.error || "Greška");
       }
     } catch {
-      setError(true);
+      setPoruka("Greška pri komunikaciji");
     }
-  };
+  }
+
+  if (!artikalId) return <p className="text-center mt-10 text-red-600">Artikal ID nije dostupan</p>;
+
   return (
-    <div className="max-w-lg mx-auto p-6 shadow rounded bg-white mt-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('details')}</h2>
+    <form
+      onSubmit={handleUpdate}
+      className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md space-y-6"
+    >
+      <h2 className="text-2xl font-semibold text-gray-800">Izmeni artikal</h2>
 
-      <input
-        type="text"
-        name="naziv"
-        value={form.naziv}
-        onChange={(e) => setForm({ ...form, naziv: e.target.value })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Naziv"
-      />
+      <div>
+        <label htmlFor="naziv" className="block mb-1 text-sm font-medium text-gray-700">
+          Naziv
+        </label>
+        <input
+          id="naziv"
+          type="text"
+          value={naziv}
+          onChange={(e) => setNaziv(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-      <input
-        type="number"
-        name="cijena"
-        value={form.cijena}
-        onChange={(e) => setForm({ ...form, cijena: Number(e.target.value) })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Cijena"
-      />
-      <input
-        type="text"
-        name="opis"
-        value={form.opis}
-        onChange={(e) => setForm({ ...form, opis: e.target.value })}
-        className="w-full mb-4 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Opis"
-      />
+      <div>
+        <label htmlFor="opis" className="block mb-1 text-sm font-medium text-gray-700">
+          Opis
+        </label>
+        <textarea
+          id="opis"
+          value={opis}
+          onChange={(e) => setOpis(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
       <button
-        onClick={() => {
-          if (typeof params.id === 'string') {
-            handleEdit(params.id, form);
-          }
-        }}
-        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold w-full"
+        type="submit"
+        className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
       >
-       {t('save_changes')}
+        Sačuvaj promene
       </button>
 
-      <div className="mt-4 min-h-[1.5rem]">
-        {error && <p className="text-red-600 font-semibold">{t('error_loading_data')}</p>}
-        {success && <p className="text-green-600 font-semibold">{t('data_saved_successfully')}</p>}
-      </div>
-    </div>
+      {poruka && <p className="text-center text-sm text-gray-700">{poruka}</p>}
+    </form>
   );
-};
-
-export default IzmjenaPage;
+}
