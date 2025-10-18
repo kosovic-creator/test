@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 type Korisnik = {
   id: number;
@@ -14,6 +15,7 @@ export default function KorisnikPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
+    const { t } = useTranslation('korisnici');
 
   useEffect(() => {
     async function fetchKorisnici() {
@@ -59,12 +61,12 @@ export default function KorisnikPage() {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Korisnici</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t('title')}</h2>
       <button
         onClick={() => router.push("/crud/korisnici/dodaj")}
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
       >
-        Dodaj korisnika
+        {t('addNew')}
       </button>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
@@ -79,13 +81,13 @@ export default function KorisnikPage() {
                 onClick={() => router.push(`/crud/korisnici/izmjeni/${korisnik.id}`)}
                 className="text-blue-500 hover:underline mr-4"
               >
-                Izmeni
+                {t('edit')}
               </button>
               <button
                 onClick={() => handleDelete(korisnik.id)}
                 className="text-red-500 hover:underline"
               >
-                Obriši
+                {t('delete')}
               </button>
             </div>
           </li>

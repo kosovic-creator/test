@@ -3,5 +3,19 @@
     "create": "Kreiraj korisnika",
     "edit": "Izmijeni korisnika",
     "delete": "Obriši korisnika",
-    "details": "Detalji korisnika"
+    "details": "Detalji korisnika",
+    "list": "Lista korisnika",
+    "name": "Ime",
+    "email": "Email",
+    "actions": "Akcije",
+    "submit": "Sačuvaj",
+    "cancel": "Otkaži",
+    "loading": "Učitavanje...",
+    "noUsers": "Nema korisnika za prikaz.",
+    "error": "Došlo je do greške. Pokušajte ponovo.",
+    "successCreate": "Korisnik uspješno kreiran.",
+    "successUpdate": "Korisnik uspješno ažuriran.",
+    "successDelete": "Korisnik uspješno obrisan.",
+    "addNew": "Dodaj novog korisnika"
+    
 }

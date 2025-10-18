@@ -3,5 +3,18 @@
     "create": "Create User",
     "edit": "Edit User",
     "delete": "Delete User",
-    "details": "User Details"
+    "details": "User Details",
+    "list": "User List",
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "submit": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "noUsers": "No users to display.",
+    "error": "An error occurred. Please try again.",
+    "successCreate": "User created successfully.",
+    "successUpdate": "User updated successfully.",
+    "successDelete": "User deleted successfully.",
+    "addNew": "Add New User"
 }
