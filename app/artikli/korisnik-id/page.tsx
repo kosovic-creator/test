@@ -21,21 +21,33 @@ const ArtikliPage = () => {
     const [data, setData] = useState<Artikal[]>([]);
     const [error, setError] = useState<boolean | null>(null);
     const [success, setSuccess] = useState<boolean | null>(null);
-    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const searchParams = React.useMemo(() => (typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null), []);
     const lang = searchParams?.get('lang') || 'sr';
     useEffect(() => {
         const fetchArtikli = async () => {
-            if (session?.user.id) {
+            const queryKorisnikId = searchParams?.get('korisnikId');
+            // Proceed if we have either a session user or an explicit query param
+            if (queryKorisnikId || session?.user?.id) {
                 try {
-                // updated to match API route under /api/artikli
-                    const response = await fetch(`/api/artikli?lang=${lang}`);
+                    // If URL contains korisnikId, prefer that. Otherwise send korisnikEmail (resolved server-side) or session id.
+                    let param: string;
+                    if (queryKorisnikId) {
+                        param = `korisnikId=${encodeURIComponent(queryKorisnikId)}`;
+                    } else {
+                        const email = session?.user?.email;
+                        param = email ? `korisnikEmail=${encodeURIComponent(email)}` : `korisnikId=${encodeURIComponent(session!.user.id as string)}`;
+                    }
+                    // (debug log removed)
+                    const response = await fetch(`/api/artikli/filter?lang=${lang}&${param}`);
                     if (!response.ok) {
                         console.error('Failed to fetch artikli data', response.status, response.statusText);
                         setError(true);
                         return;
                     }
                     const artikliData = await response.json();
-                    setData(artikliData);
+                    // API may return either an array (legacy) or { artikli, count }
+                    const artikliArray = Array.isArray(artikliData) ? artikliData : (artikliData?.artikli ?? []);
+                    setData(artikliArray);
                     setError(false);
                     console.log('Fetched artikli data', artikliData);
                 } catch (err) {
@@ -45,7 +57,7 @@ const ArtikliPage = () => {
             }
         };
         fetchArtikli();
-    }, [lang, session]);
+    }, [lang, session, searchParams]);
     const handleDelete = async (id: string) => {
         const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
