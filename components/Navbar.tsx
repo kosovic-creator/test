@@ -31,6 +31,7 @@ const Navbar = () => {
           <li style={{ marginRight: '10px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
+          <li style={{ marginRight: '10px' }}><Link href="/artikli/korisnik-id"><span className="home">{t('artikli_korisnik_id')}</span></Link></li>
 
         </ul>
 

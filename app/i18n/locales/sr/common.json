@@ -8,5 +8,6 @@
     "confirm": "Da li ste sigurni?",
     "menu": "Meni",
     "logout": "Odjava",
-    "profile": "Profil"
+    "profile": "Profil",
+    "artikli_korisnik_id": "Artikli po korisniku ID"
 }

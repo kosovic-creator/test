@@ -8,5 +8,6 @@
   "confirm": "Are you sure?",
   "menu": "Menu",
   "logout": "Logout",
-  "profile": "Profile"
+  "profile": "Profile",
+  "artikli_korisnik_id": "Articles by User ID"
 }
