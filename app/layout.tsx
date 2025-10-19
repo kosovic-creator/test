@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { MyProvider } from "@/components/MyContext";
-import AuthProvider from '@/components/AuthProvider'
-import ToastProvider from '@/components/ToastProvider'
+import Providers from "@/components/Providers";
 // import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const geistSans = Geist({
@@ -32,17 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         <MyProvider>
-          <AuthProvider>
-            <ToastProvider>
-              <Navbar />
-              <div style={{ padding: 8 }}>
-                {/* <LanguageSwitcher /> */}
-              </div>
-              {children}
-            </ToastProvider>
-          </AuthProvider>
-         </MyProvider>
+        <Providers>
+          {children}
+        </Providers>
 
       </body>
     </html>
