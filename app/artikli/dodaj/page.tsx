@@ -31,6 +31,7 @@ async function handleSubmit(e: React.FormEvent) {
   try {
     const res = await fetch("/api/artikli", {
       method: "POST",
+      credentials: 'include',
       headers: { "Content-Type": "application/json" },
       // send numeric chosenId so the API receives an integer for korisnikId
       body: JSON.stringify({ naziv, opis, korisnikId }),

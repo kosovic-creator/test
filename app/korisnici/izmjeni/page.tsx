@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 export default function IzmeniKorisnika() {

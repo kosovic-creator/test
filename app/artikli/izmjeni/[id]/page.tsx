@@ -18,7 +18,7 @@ const { t } = useTranslation("artikli");
 
     async function fetchArtikal() {
       try {
-        const res = await fetch(`/api/artikli/${artikalId}`);
+        const res = await fetch(`/api/artikli/${artikalId}`, { credentials: 'include' });
         const data = await res.json();
         if (res.ok) {
           setNaziv(data.naziv);
@@ -41,6 +41,7 @@ const { t } = useTranslation("artikli");
     try {
       const res = await fetch(`/api/artikli/${artikalId}`, {
         method: "PUT",
+        credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ naziv, opis }),
       });

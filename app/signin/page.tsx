@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { Suspense } from 'react'
 import { signIn, type SignInResponse } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -8,7 +8,7 @@ import FormButton from '@/components/FormButton'
 import useForm from '@/hooks/useForm'
 import { emailValid, required } from '@/lib/validators'
 
-export default function SignInPage() {
+function SignInPage() {
   const router = useRouter()
   const params = useSearchParams()
   const callbackUrl = params?.get('callbackUrl') || '/'
@@ -42,4 +42,12 @@ export default function SignInPage() {
       </form>
     </div>
   )
+}
+
+export default function SignInPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignInPage />
+    </Suspense>
+  );
 }

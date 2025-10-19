@@ -18,7 +18,7 @@ const Page = () => {
   const { t } = useTranslation('artikli');
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/artikli/' + id + '?lang=' + lang);
+      const response = await fetch('/api/artikli/' + id + '?lang=' + lang, { credentials: 'include' });
       if (!response.ok) {
         console.error('Failed to fetch artikal data');
         return;

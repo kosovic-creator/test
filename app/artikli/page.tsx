@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import { useSession } from 'next-auth/react';
 
 type Artikal = {
     id: string;
@@ -14,6 +15,7 @@ type Artikal = {
 };
 
 const ArtikliPage = () => {
+    const { data: session } = useSession();
     const { t } = useTranslation('artikli');
     const router = useRouter();
     const [data, setData] = useState<Artikal[]>([]);
@@ -23,28 +25,29 @@ const ArtikliPage = () => {
     const lang = searchParams?.get('lang') || 'sr';
     useEffect(() => {
         const fetchArtikli = async () => {
-            try {
+            if (session?.user.id) {
+                try {
                 // updated to match API route under /api/artikli
-                const response = await fetch(`/api/artikli?lang=${lang}`);
-                if (!response.ok) {
-                    console.error('Failed to fetch artikli data', response.status, response.statusText);
+                    const response = await fetch(`/api/artikli?lang=${lang}`, { credentials: 'include' });
+                    if (!response.ok) {
+                        console.error('Failed to fetch artikli data', response.status, response.statusText);
+                        setError(true);
+                        return;
+                    }
+                    const artikliData = await response.json();
+                    setData(artikliData);
+                    setError(false);
+                    console.log('Fetched artikli data', artikliData);
+                } catch (err) {
+                    console.error('Error fetching artikli data', err);
                     setError(true);
-                    return;
                 }
-                const artikliData = await response.json();
-                setData(artikliData);
-                setError(false);
-                console.log('Fetched artikli data', artikliData);
-            } catch (err) {
-                console.error('Error fetching artikli data', err);
-                setError(true);
             }
         };
         fetchArtikli();
-
-    }, [lang]);
+    }, [lang, session]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
         setError(false);
         setSuccess(true);
