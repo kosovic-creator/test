@@ -29,8 +29,8 @@ const Navbar = () => {
         <h1>Test</h1>
         <ul style={{ display: 'flex', listStyle: 'none', padding: 0, alignItems: 'center' }}>
           <li style={{ marginRight: '10px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/crud/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/crud/artikli"><span className="home">{t('artikli')}</span></Link></li>
+          <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
+          <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
 
         </ul>
 

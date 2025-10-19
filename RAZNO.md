@@ -17,7 +17,7 @@ const Page = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/test/' + id);
+      const response = await fetch('/api/' + id);
       const data = await response.json();
       setData(data);
     };

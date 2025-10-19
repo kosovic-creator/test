@@ -18,7 +18,7 @@ const Page = () => {
   const { t } = useTranslation('artikli');
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/test/artikli/' + id + '?lang=' + lang);
+      const response = await fetch('/api/artikli/' + id + '?lang=' + lang);
       if (!response.ok) {
         console.error('Failed to fetch artikal data');
         return;
@@ -31,7 +31,7 @@ const Page = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
-      <Link href="/crud/artikli">{t('back_to_artikli')}</Link>
+      <Link href="/artikli">{t('back_to_artikli')}</Link>
       {data ? (
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-4">{data.naziv}</h1>

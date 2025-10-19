@@ -24,8 +24,8 @@ const ArtikliPage = () => {
     useEffect(() => {
         const fetchArtikli = async () => {
             try {
-                // updated to match API route under /api/test/artikli
-                const response = await fetch(`/api/test/artikli?lang=${lang}`);
+                // updated to match API route under /api/artikli
+                const response = await fetch(`/api/artikli?lang=${lang}`);
                 if (!response.ok) {
                     console.error('Failed to fetch artikli data', response.status, response.statusText);
                     setError(true);
@@ -44,7 +44,7 @@ const ArtikliPage = () => {
 
     }, [lang]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/test/artikli/${id}`, { method: 'DELETE' });
+        const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE' });
         const data = await response.json();
         setError(false);
         setSuccess(true);
@@ -56,14 +56,14 @@ const ArtikliPage = () => {
 
     const handleEdit = (artikal: Artikal) => {
         // navigate to edit page; form state removed since it's unused here
-        router.push(`/crud/artikli/izmjeni/${artikal.id}`);
+        router.push(`/artikli/izmjeni/${artikal.id}`);
     };
 
     return (
         <div className="max-w-5xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
             <button
-                onClick={() => router.push('/crud/artikli/dodaj')}
+                onClick={() => router.push('/artikli/dodaj')}
                 className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
             >
                 {t('create')}
@@ -98,7 +98,7 @@ const ArtikliPage = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => router.push(`/crud/artikli/${artikal.id}`)}
+                                        onClick={() => router.push(`/artikli/${artikal.id}`)}
                                         className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
                                     >
                                         {t('details')}

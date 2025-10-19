@@ -51,7 +51,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     });
     return NextResponse.json(korisnik);
   } catch (err) {
-    console.error("PUT /api/test/korisnik/[id] error:", err);
+    console.error("PUT /api/korisnik/[id] error:", err);
     return NextResponse.json({ error: "Greška pri ažuriranju" }, { status: 500 });
   }
 }
@@ -66,7 +66,7 @@ export async function DELETE(_: NextRequest, context: { params: Promise<{ id: st
     await prisma.korisnik.delete({ where: { id } });
     return NextResponse.json({ message: "Korisnik je obrisan." });
   } catch (err) {
-    console.error("DELETE /api/test/korisnik/[id] error:", err);
+    console.error("DELETE /api/korisnik/[id] error:", err);
     return NextResponse.json({ error: "Greška pri brisanju korisnika" }, { status: 500 });
   }
 }

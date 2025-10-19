@@ -20,7 +20,7 @@ export default function KorisnikPage() {
     useEffect(() => {
         async function fetchKorisnici() {
             try {
-                const res = await fetch("/api/test/korisnik");
+                const res = await fetch("/api/korisnik");
                 if (!res.ok) {
                     setError("Greška pri učitavanju korisnika");
                     return;
@@ -40,7 +40,7 @@ export default function KorisnikPage() {
         // if (!confirm("Da li ste sigurni da želite da obrišete korisnika?")) return;
 
         try {
-            const res = await fetch(`/api/test/korisnik/${id}`, { method: "DELETE" });
+            const res = await fetch(`/api/korisnik/${id}`, { method: "DELETE" });
             const data = await res.json();
             if (res.ok) {
                 setSuccess("Korisnik uspešno obrisan");
@@ -55,7 +55,7 @@ export default function KorisnikPage() {
         setTimeout(() => {
             setError(null);
             setSuccess(null);
-            router.push("/crud/korisnici");
+            router.push("/korisnici");
         }, 3000);
     }
 
@@ -64,7 +64,7 @@ export default function KorisnikPage() {
             <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
 
             <button
-                onClick={() => router.push("/crud/korisnici/dodaj")}
+                onClick={() => router.push("/korisnici/dodaj")}
                 className="mb-6 px-5 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"
             >
                 {t("addNew")}
@@ -104,7 +104,7 @@ export default function KorisnikPage() {
                                 <td className="px-6 py-4 whitespace-nowrap text-center space-x-4">
                                     <button
                                         onClick={() =>
-                                            router.push(`/crud/korisnici/izmjeni/${korisnik.id}`)
+                                            router.push(`/korisnici/izmjeni/${korisnik.id}`)
                                         }
                                         className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold transition"
                                     >

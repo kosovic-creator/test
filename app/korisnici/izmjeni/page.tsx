@@ -18,7 +18,7 @@ export default function IzmeniKorisnika() {
 
         async function fetchKorisnik() {
             try {
-                const res = await fetch(`/api/test/korisnik/${korisnikId}`);
+                const res = await fetch(`/api/korisnik/${korisnikId}`);
                 const data = await res.json();
                 if (res.ok) {
                     setEmail(data.email);
@@ -39,7 +39,7 @@ export default function IzmeniKorisnika() {
         if (!korisnikId) return;
 
         try {
-            const res = await fetch(`/api/test/korisnik/${korisnikId}`, {
+            const res = await fetch(`/api/korisnik/${korisnikId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, ime }),

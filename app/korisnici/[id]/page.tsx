@@ -15,7 +15,7 @@ export default function PrikaziKorisnikId() {
 
     async function fetchKorisnikId() {
       try {
-        const res = await fetch(`/api/test/korisnik/${korisnikId}`);
+        const res = await fetch(`/api/korisnik/${korisnikId}`);
         const data = await res.json();
         if (res.ok && data.id) {
           setId(data.id);

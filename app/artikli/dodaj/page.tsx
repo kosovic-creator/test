@@ -29,7 +29,7 @@ async function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
 
   try {
-    const res = await fetch("/api/test/artikli", {
+    const res = await fetch("/api/artikli", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // send numeric chosenId so the API receives an integer for korisnikId
@@ -49,7 +49,7 @@ async function handleSubmit(e: React.FormEvent) {
 
         setPoruka("Artikal uspešno dodat");
       setTimeout(() => {
-        router.push("/crud/artikli");
+        router.push("/artikli");
       }, 4000);
     } else {
       setPoruka(data.error || "Greška");

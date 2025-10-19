@@ -12,7 +12,7 @@ export default function DodajKorisnika() {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/test/korisnik", {
+            const res = await fetch("/api/korisnik", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, ime }),
