@@ -4,10 +4,12 @@ import React, { useContext } from "react";
 import MyContext from './MyContext';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/app/i18n/config';
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 const Navbar = () => {
   const context = useContext(MyContext);
   const { t } = useTranslation('common');
+  const { data: session, status } = useSession()
 
   const switchLang = async (lang: string) => {
     try {
@@ -29,10 +31,22 @@ const Navbar = () => {
           <li style={{ marginRight: '10px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/crud/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/crud/artikli"><span className="home">{t('artikli')}</span></Link></li>
-        
+
         </ul>
 
         <div className="flex items-center space-x-2">
+          {status === 'loading' ? (
+            <div>Loading...</div>
+          ) : session?.user ? (
+            <>
+              <span style={{ marginRight: 8 }}>Hi, {session.user.name ?? session.user.email}</span>
+              <button onClick={() => signOut()} className="px-2 py-1 bg-red-500 text-white rounded text-sm">Sign out</button>
+            </>
+          ) : (
+            <button onClick={() => signIn()} className="px-2 py-1 bg-green-500 text-white rounded text-sm">Sign in</button>
+          )}
+
+
           <button
             onClick={() => switchLang('sr')}
             className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium"

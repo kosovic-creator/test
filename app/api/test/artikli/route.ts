@@ -16,10 +16,13 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { naziv, opis, korisnikId } = data;
+    const { naziv, opis } = data;
+    // accept number or string for korisnikId and coerce to number
+    const rawKorisnikId = data.korisnikId;
+    const korisnikId = Number(rawKorisnikId);
 
-    if (!naziv || !korisnikId)
-      return NextResponse.json({ error: "Nedostaju podaci." }, { status: 400 });
+    if (!naziv || !rawKorisnikId || isNaN(korisnikId) || korisnikId <= 0)
+      return NextResponse.json({ error: "Nedostaju ili neispravni podaci." }, { status: 400 });
 
     const artikal = await prisma.artikal.create({
       data: { naziv, opis, korisnikId },

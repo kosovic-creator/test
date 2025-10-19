@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function DodajArtikal() {
   const [naziv, setNaziv] = useState("");
@@ -9,37 +12,52 @@ export default function DodajArtikal() {
   const [korisnikId, setKorisnikId] = useState("");
   const [poruka, setPoruka] = useState<string | null>(null);
   const { t } = useTranslation("artikli");
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const { data: session } = useSession();
+  const router = useRouter();
 
-    const id = Number(korisnikId);
-    if (isNaN(id) || id <= 0) {
-      setPoruka("Neispravan korisnički ID");
-      return;
-    }
 
-    try {
-      const res = await fetch("/api/test/artikli", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ naziv, opis, korisnikId: id }),
-      });
 
-      const data = await res.json();
+const sessionUserId = (session?.user as any)?.id;
 
-      if (res.ok) {
-        setPoruka("Artikal uspešno dodat");
-        setNaziv("");
-        setOpis("");
-        setKorisnikId("");
-      } else {
-        setPoruka(data.error || "Greška");
-      }
-    } catch {
-      setPoruka("Greška pri komunikaciji");
-    }
+useEffect(() => {
+  if (sessionUserId) {
+    setKorisnikId(sessionUserId.toString());
   }
+}, [sessionUserId]);
 
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("/api/test/artikli", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // send numeric chosenId so the API receives an integer for korisnikId
+      body: JSON.stringify({ naziv, opis, korisnikId }),
+    });
+
+    const data = await res.json();
+    console.log("Korisnik ID sent:", korisnikId);
+
+    if (res.ok) {
+
+        setPoruka("Artikal uspešno dodat");
+
+      setNaziv("");
+      setOpis("");
+      setKorisnikId("");
+
+        setPoruka("Artikal uspešno dodat");
+      setTimeout(() => {
+        router.push("/crud/artikli");
+      }, 4000);
+    } else {
+      setPoruka(data.error || "Greška");
+    }
+  } catch {
+    setPoruka("Greška pri komunikaciji");
+  }
+}
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t('addNew')}</h2>
@@ -73,7 +91,7 @@ export default function DodajArtikal() {
           />
         </div>
 
-        <div>
+        {/* <div>
           <label htmlFor="korisnikId" className="block text-sm font-medium text-gray-700 mb-1">
             {t('userId')}
           </label>
@@ -86,7 +104,7 @@ export default function DodajArtikal() {
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
+        </div> */}
 
         <div>
           <button

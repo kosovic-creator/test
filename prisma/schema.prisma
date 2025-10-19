@@ -17,6 +17,7 @@ model Korisnik {
   id        Int       @id @default(autoincrement())
   email     String    @unique
   ime       String
+  password  String?
   artikli   Artikal[]
   createdAt DateTime  @default(now())
 }
