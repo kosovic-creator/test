@@ -3,8 +3,7 @@
 'use client';
 import useFetch from '@/hooks/useFeatch';
 import React from 'react'
-import useForm from '@/hooks/useForm'
-import { Values } from 'react-i18next/src/trans';
+
 
 const hooks = () => {
   const result = useFetch("/api/korisnik") as any;
@@ -13,18 +12,30 @@ const hooks = () => {
   if (loading) return <p>Učitavanje...</p>;
   if (error) return <p>Greška: {String(error)}</p>;
   if (!data) return <p>Nema podataka</p>;
-   
+
 
 
   return <div>
     <h1>Korisnici</h1>
-    <ul>
-      {data.map((korisnik: any) => (
-        <li key={korisnik.id}>
-          {korisnik.ime} ({korisnik.email})
-        </li>
-      ))}
-    </ul>
+  
+    <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
+      <thead>
+        <tr >
+          <th>ID</th>
+          <th>Ime</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody >
+        {data.map((korisnik: any) => (
+          <tr key={korisnik.id}>
+            <td>{korisnik.id}</td>
+            <td>{korisnik.ime}</td>
+            <td>{korisnik.email}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>;
 }
 
