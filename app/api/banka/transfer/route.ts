@@ -62,7 +62,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-export async function GET() {
-  const accounts = await prisma.account.findMany()
-  return NextResponse.json({ accounts }, { status: 200 })
-}
