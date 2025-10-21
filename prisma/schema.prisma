@@ -31,3 +31,23 @@ model Artikal {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
+
+model User {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
+  posts Post[] // Veza: jedan korisnik ima mnogo postova
+}
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  title    String
+  content  String
+  authorId Int
+  author   User   @relation(fields: [authorId], references: [id]) // Svaki post pripada jednom korisniku
+}
+model Account {
+  id      Int     @id @default(autoincrement())
+  email   String  @unique
+  balance Float   @default(0) // saldo na računu može biti decimalan broj
+}
