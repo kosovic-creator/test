@@ -8,7 +8,7 @@ const Transfer = () => {
   const [result, setResult] = useState<string | null>(null);
 
   const handleTransfer = async () => {
-    const response = await fetch('/api/transfer', {
+    const response = await fetch('/api/banka/transfer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

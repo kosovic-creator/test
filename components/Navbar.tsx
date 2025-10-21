@@ -32,7 +32,45 @@ const Navbar = () => {
           <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/artikli/korisnik-id"><span className="home">{t('artikli_korisnik_id')}</span></Link></li>
-
+          <li style={{ marginRight: '10px' }} className="home">banka</li>
+          <li style={{ position: 'relative', marginRight: '10px' }}>
+            <div
+              style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}
+              onMouseEnter={e => {
+                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
+                if (menu) menu.style.display = 'block';
+              }}
+              onMouseLeave={e => {
+                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
+                if (menu) menu.style.display = 'none';
+              }}
+            >
+              <span style={{ padding: '4px 8px' }}>▼</span>
+              <ul
+                className="dropdown-menu"
+                style={{
+                  display: 'none',
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  background: '#fff',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  padding: '8px 0',
+                  margin: 0,
+                  listStyle: 'none',
+                  minWidth: '140px',
+                  zIndex: 1000,
+                }}
+              >
+                <li style={{ padding: '8px 16px' }}>
+                  <Link href="/banka/transfer">bankaTransferi</Link>
+                </li>
+                <li style={{ padding: '8px 16px' }}>
+                  <Link href="/banka/uplata">Uplati</Link>
+                </li>
+              </ul>
+            </div>
+          </li>
         </ul>
 
         <div className="flex items-center space-x-2">
