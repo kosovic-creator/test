@@ -63,10 +63,13 @@ const Navbar = () => {
                 }}
               >
                 <li style={{ padding: '8px 16px' }}>
-                  <Link href="/banka/transfer">bankaTransferi</Link>
+                  <Link href="/banka">Stanje</Link>
                 </li>
                 <li style={{ padding: '8px 16px' }}>
-                  <Link href="/banka/uplata">Uplati</Link>
+                  <Link href="/banka/transfer">Transferi</Link>
+                </li>
+                <li style={{ padding: '8px 16px' }}>
+                  <Link href="/banka/uplata">Uplata</Link>
                 </li>
               </ul>
             </div>

@@ -29,37 +29,50 @@ const Uplata = () => {
       });
       const data = await response.json();
       setResult(data.message);
+      setAmount('');
+      setTo('');
     };
   return (
+<div className="max-w-md mx-auto p-4 bg-white shadow rounded-md">
+  <h1 className="text-2xl font-semibold mb-6 text-gray-800">Uplata</h1>
+  <form onSubmit={handleUplata} className="space-y-4">
     <div>
-      <h1>Uplata</h1>
-      <form onSubmit={handleUplata}>
-
-        <div>
-          <label htmlFor="to">Primalac:</label>
-          <input
-            type="email"
-            id="to"
-            value={to}
-            onChange={e => setTo(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="amount">Iznos:</label>
-          <input
-            type="number"
-            id="amount"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Uplati</button>
-      </form>
-      {result && <p>{result}</p>}
+      <label htmlFor="to" className="block text-sm font-medium text-gray-700 mb-1">Primalac:</label>
+      <input
+        type="email"
+        id="to"
+        value={to}
+        onChange={e => setTo(e.target.value)}
+        required
+        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
-  )
+    <div>
+      <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Iznos:</label>
+      <input
+        type="number"
+        id="amount"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+        required
+        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        min="0.01"
+      />
+    </div>
+    <button
+      type="submit"
+      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition-colors"
+    >
+      Pošalji uplatu
+    </button>
+    {result && (
+      <div className="mt-3 text-center text-green-600 font-medium">
+        {result}
+      </div>
+    )}
+  </form>
+</div>
+);
 }
 
 export default Uplata

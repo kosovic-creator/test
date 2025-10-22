@@ -22,28 +22,40 @@ const Transfer = () => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="From"
-        value={from}
-        onChange={e => setFrom(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="To"
-        value={to}
-        onChange={e => setTo(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={e => setAmount(e.target.value)}
-      />
-      <button onClick={handleTransfer}>Pošalji transfer</button>
-      {result && <div>{result}</div>}
+   <div className="max-w-lg mx-auto p-4 bg-white rounded-md shadow space-y-4">
+  <input
+    type="text"
+    placeholder="From"
+    value={from}
+    onChange={e => setFrom(e.target.value)}
+    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+  <input
+    type="text"
+    placeholder="To"
+    value={to}
+    onChange={e => setTo(e.target.value)}
+    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+  <input
+    type="number"
+    placeholder="Amount"
+    value={amount}
+    onChange={e => setAmount(e.target.value)}
+    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
+  <button
+    onClick={handleTransfer}
+    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition-colors"
+  >
+    Pošalji transfer
+  </button>
+  {result && (
+    <div className="mt-3 text-center text-green-600 font-medium">
+      {result}
     </div>
+  )}
+</div>
   );
 };
 
