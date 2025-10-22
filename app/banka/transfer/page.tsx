@@ -1,4 +1,5 @@
 'use client';
+import  { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const Transfer = () => {
@@ -6,6 +7,7 @@ const Transfer = () => {
   const [to, setTo] = useState('');
   const [amount, setAmount] = useState('');
   const [result, setResult] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleTransfer = async () => {
     const response = await fetch('/api/banka/transfer', {
@@ -19,6 +21,9 @@ const Transfer = () => {
     });
     const data = await response.json();
     setResult(data.message);
+    setTimeout(() => {
+    router.push('/banka');
+  }, 1500);
   };
 
   return (
