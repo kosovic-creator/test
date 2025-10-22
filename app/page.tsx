@@ -1,9 +1,9 @@
-// import Greeting from "@/components/Greeting";
+import Greeting from "@/components/Greeting";
 
 export default function Home() {
   return (
     <>
-     {/* <Greeting name="Marko" /> */}
+     <Greeting name="Marko" />
     </>
   );
 }
