@@ -1,7 +1,9 @@
+import Greeting from "@/components/Greeting";
+
 export default function Home() {
   return (
     <>
-      Home
+     <Greeting name="Marko" />
     </>
   );
 }

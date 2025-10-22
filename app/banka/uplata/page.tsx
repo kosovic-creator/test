@@ -1,6 +1,6 @@
 //
 'use client'
-import React from 'react'
+import React, { FormEvent } from 'react'
 
 const Uplata = () => {
     // const [from, setFrom] = React.useState('');
@@ -8,7 +8,17 @@ const Uplata = () => {
     const [amount, setAmount] = React.useState('');
     const [result, setResult] = React.useState<string | null>(null);
 
-    const handleUplata = async () => {
+  const handleUplata = async (event: FormEvent) => {
+    event.preventDefault();
+    // Prvo validiraj da primalac postoji
+    const korisnikRes = await fetch(`/api/banka/korisnik?email=${encodeURIComponent(to)}`);
+    if (!korisnikRes.ok) {
+      const err = await korisnikRes.json();
+      setResult(err.message || 'Primalac ne postoji');
+      return;
+    }
+
+  // Ako postoji, nastavi sa uplatom
       const response = await fetch('/api/banka/uplata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -24,16 +34,7 @@ const Uplata = () => {
     <div>
       <h1>Uplata</h1>
       <form onSubmit={handleUplata}>
-        {/* <div>
-          <label htmlFor="from">Pošiljalac:</label>
-          <input
-            type="email"
-            id="from"
-            value={from}
-            onChange={e => setFrom(e.target.value)}
-            required
-          />
-        </div> */}
+
         <div>
           <label htmlFor="to">Primalac:</label>
           <input
