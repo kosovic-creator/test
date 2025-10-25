@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "chrome-devtools-mcp": "^0.9.0",
     "i18next": "^25.6.0",
+    "lucide-react": "^0.548.0",
     "next": "15.5.4",
     "next-auth": "^4.22.1",
     "react": "19.1.0",

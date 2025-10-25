@@ -5,6 +5,7 @@ import MyContext from './MyContext';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/app/i18n/config';
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { Home } from 'lucide-react';
 
 const Navbar = () => {
   const context = useContext(MyContext);
@@ -28,10 +29,9 @@ const Navbar = () => {
       <div style={{ padding: '10px', borderBottom: '1px solid #ccc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
         <ul style={{ display: 'flex', listStyle: 'none', padding: 0, alignItems: 'center' }}>
-          <li style={{ marginRight: '300px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
-
+          <li style={{ marginRight: '300px' }}><Link href="/"><span className="home"> <Home size={20} /> </span></Link></li>
           <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnik')}</span></Link></li>
-           <li style={{ marginRight: '10px' }} className="home">{t('artikli')}</li>
+          <li style={{ marginRight: '10px' }} className="home">{t('artikli')}</li>
           <li style={{ position: 'relative', marginRight: '10px' }}>
             <div
               style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}
