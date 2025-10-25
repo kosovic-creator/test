@@ -37,45 +37,62 @@ const Uplata = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white shadow rounded-md">
-      <h1 className="text-2xl font-semibold mb-6 text-gray-800">Uplata</h1>
-      <form onSubmit={handleUplata} className="space-y-4">
-        <div>
-          <label htmlFor="to" className="block text-sm font-medium text-gray-700 mb-1">Primalac:</label>
-          <input
-            type="email"
-            id="to"
-            value={to}
-            onChange={e => setTo(e.target.value)}
-            required
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Iznos:</label>
-          <input
-            type="number"
-            id="amount"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-            required
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            min="0.01"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition-colors"
-        >
-          Pošalji uplatu
-        </button>
-        {result && (
-          <div className="mt-3 text-center text-green-600 font-medium">
-            {result}
-          </div>
-        )}
-      </form>
+  <div className="max-w-md mx-auto bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+  <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center tracking-tight">
+    Uplata
+  </h1>
+
+  <form onSubmit={handleUplata} className="space-y-5">
+    <div className="flex flex-col">
+      <label
+        htmlFor="to"
+        className="text-sm font-medium text-gray-700 mb-1"
+      >
+        Primalac:
+      </label>
+      <input
+        type="email"
+        id="to"
+        value={to}
+        onChange={(e) => setTo(e.target.value)}
+        required
+        placeholder="unesi email primaoca"
+        className="w-full border border-gray-300 bg-gray-50 rounded-lg px-3 py-2 text-gray-800 placeholder-gray-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+      />
     </div>
+
+    <div className="flex flex-col">
+      <label
+        htmlFor="amount"
+        className="text-sm font-medium text-gray-700 mb-1"
+      >
+        Iznos:
+      </label>
+      <input
+        type="number"
+        id="amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
+        placeholder="unesi iznos (npr. 25.00)"
+        min="0.01"
+        step="0.01"
+        className="w-full border border-gray-300 bg-gray-50 rounded-lg px-3 py-2 text-gray-800 placeholder-gray-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+      />
+    </div>
+
+    <button
+      type="submit"
+      className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold tracking-wide hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition duration-200"
+    >
+      Pošalji uplatu
+    </button>
+
+    {result && (
+      <div className="text-center text-sm text-red-600 mt-4">{result}</div>
+    )}
+  </form>
+</div>
   );
 }
 export default Uplata
