@@ -26,13 +26,55 @@ const Navbar = () => {
     <>
       <p>kontext: {context ? context.value : 'N/A'}</p>
       <div style={{ padding: '10px', borderBottom: '1px solid #ccc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Test</h1>
+
         <ul style={{ display: 'flex', listStyle: 'none', padding: 0, alignItems: 'center' }}>
-          <li style={{ marginRight: '10px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnici')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/artikli/korisnik-id"><span className="home">{t('artikli_korisnik_id')}</span></Link></li>
-          <li style={{ marginRight: '10px' }} className="home">banka</li>
+          <li style={{ marginRight: '300px' }}><Link href="/"><span className="home">{t('home')}</span></Link></li>
+
+          <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnik')}</span></Link></li>
+           <li style={{ marginRight: '10px' }} className="home">{t('artikli')}</li>
+          <li style={{ position: 'relative', marginRight: '10px' }}>
+            <div
+              style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}
+              onMouseEnter={e => {
+                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
+                if (menu) menu.style.display = 'block';
+              }}
+              onMouseLeave={e => {
+                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
+                if (menu) menu.style.display = 'none';
+              }}
+            >
+              <span style={{ padding: '4px 8px' }}>▼</span>
+              <ul
+                className="dropdown-menu"
+                style={{
+                  display: 'none',
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  background: '#fff',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  padding: '8px 0',
+                  margin: 0,
+                  listStyle: 'none',
+                  minWidth: '140px',
+                  zIndex: 1000,
+                }}
+              >
+                <li style={{ padding: '8px 16px' }}>
+                  <Link href="/artikli">Artikli</Link>
+                </li>
+                <li style={{ padding: '8px 16px' }}>
+                  <Link href="/artikli/korisnik-id" >Artikli id od sessije</Link>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+          {/* <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
+          <li style={{ marginRight: '10px' }}><Link href="/artikli/korisnik-id"><span className="home">{t('artikli_korisnik_id')}</span></Link></li> */}
+          <li style={{ marginRight: '10px' }} className="home">{t('banka')}</li>
           <li style={{ position: 'relative', marginRight: '10px' }}>
             <div
               style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}

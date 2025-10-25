@@ -9,5 +9,8 @@
     "menu": "Meni",
     "logout": "Odjava",
     "profile": "Profil",
-    "artikli_korisnik_id": "Artikli po korisniku ID"
+    "artikli_korisnik_id": "Artikli po korisniku ID",
+    "artikli": "Artikli",
+    "banka": "Banka",
+    "korisnik": "Korisnici"
 }

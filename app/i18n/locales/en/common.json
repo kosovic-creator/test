@@ -9,5 +9,8 @@
   "menu": "Menu",
   "logout": "Logout",
   "profile": "Profile",
-  "artikli_korisnik_id": "Articles by User ID"
+  "artikli_korisnik_id": "Articles by User ID",
+  "artikli": "Articles",
+  "banka": "Bank",
+  "korisnik": "Users"
 }
