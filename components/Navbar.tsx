@@ -25,16 +25,15 @@ const Navbar = () => {
 
   return (
     <>
-      <p>kontext: {context ? context.value : 'N/A'}</p>
-      <div style={{ padding: '10px', borderBottom: '1px solid #ccc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-
-        <ul style={{ display: 'flex', listStyle: 'none', padding: 0, alignItems: 'center' }}>
-          <li style={{ marginRight: '300px' }}><Link href="/"><span className="home"> <Home size={20} /> </span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/korisnici"><span className="home">{t('korisnik')}</span></Link></li>
-          <li style={{ marginRight: '10px' }} className="home">{t('artikli')}</li>
-          <li style={{ position: 'relative', marginRight: '10px' }}>
+      <p className="text-sm text-gray-500 mb-2">kontext: {context ? context.value : 'N/A'}</p>
+      <nav className="border-b border-gray-300 py-2 px-4 flex justify-between items-center bg-white shadow-sm">
+        <ul className="flex items-center space-x-4">
+          <li className="mr-32"><Link href="/"><span className="home flex items-center"><Home size={20} /></span></Link></li>
+          <li><Link href="/korisnici"><span className="home text-gray-700 hover:text-blue-600 transition">{t('korisnik')}</span></Link></li>
+          <li className="home text-gray-700 hover:text-blue-600 transition">{t('artikli')}</li>
+          <li className="relative">
             <div
-              style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}
+              className="cursor-pointer inline-block relative"
               onMouseEnter={e => {
                 const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
                 if (menu) menu.style.display = 'block';
@@ -44,40 +43,24 @@ const Navbar = () => {
                 if (menu) menu.style.display = 'none';
               }}
             >
-              <span style={{ padding: '4px 8px' }}>▼</span>
+              <span className="px-2 py-1">▼</span>
               <ul
-                className="dropdown-menu"
-                style={{
-                  display: 'none',
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  background: '#fff',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                  padding: '8px 0',
-                  margin: 0,
-                  listStyle: 'none',
-                  minWidth: '140px',
-                  zIndex: 1000,
-                }}
+                className="dropdown-menu absolute top-full left-0 bg-white shadow-lg py-2 m-0 list-none min-w-[140px] z-50"
+                style={{ display: 'none' }}
               >
-                <li style={{ padding: '8px 16px' }}>
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/artikli">Artikli</Link>
                 </li>
-                <li style={{ padding: '8px 16px' }}>
-                  <Link href="/artikli/korisnik-id" >Artikli id od sessije</Link>
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
+                  <Link href="/artikli/korisnik-id">Artikli id od sessije</Link>
                 </li>
-
               </ul>
             </div>
           </li>
-
-          {/* <li style={{ marginRight: '10px' }}><Link href="/artikli"><span className="home">{t('artikli')}</span></Link></li>
-          <li style={{ marginRight: '10px' }}><Link href="/artikli/korisnik-id"><span className="home">{t('artikli_korisnik_id')}</span></Link></li> */}
-          <li style={{ marginRight: '10px' }} className="home">{t('banka')}</li>
-          <li style={{ position: 'relative', marginRight: '10px' }}>
+          <li className="home text-gray-700 hover:text-blue-600 transition">{t('banka')}</li>
+          <li className="relative">
             <div
-              style={{ cursor: 'pointer', display: 'inline-block', position: 'relative' }}
+              className="cursor-pointer inline-block relative"
               onMouseEnter={e => {
                 const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
                 if (menu) menu.style.display = 'block';
@@ -87,50 +70,35 @@ const Navbar = () => {
                 if (menu) menu.style.display = 'none';
               }}
             >
-              <span style={{ padding: '4px 8px' }}>▼</span>
+              <span className="px-2 py-1">▼</span>
               <ul
-                className="dropdown-menu"
-                style={{
-                  display: 'none',
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  background: '#fff',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                  padding: '8px 0',
-                  margin: 0,
-                  listStyle: 'none',
-                  minWidth: '140px',
-                  zIndex: 1000,
-                }}
+                className="dropdown-menu absolute top-full left-0 bg-white shadow-lg py-2 m-0 list-none min-w-[140px] z-50"
+                style={{ display: 'none' }}
               >
-                <li style={{ padding: '8px 16px' }}>
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/banka">Stanje</Link>
                 </li>
-                <li style={{ padding: '8px 16px' }}>
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/banka/transfer">Transferi</Link>
                 </li>
-                <li style={{ padding: '8px 16px' }}>
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/banka/uplata">Uplata</Link>
                 </li>
               </ul>
             </div>
           </li>
         </ul>
-
         <div className="flex items-center space-x-2">
           {status === 'loading' ? (
-            <div>Loading...</div>
+            <div className="text-gray-500">Loading...</div>
           ) : session?.user ? (
             <>
-              <span style={{ marginRight: 8 }}>Hi, {session.user.name ?? session.user.email}</span>
-              <button onClick={() => signOut()} className="px-2 py-1 bg-red-500 text-white rounded text-sm">Sign out</button>
+                <span className="mr-2 text-gray-700">Hi, {session.user.name ?? session.user.email}</span>
+                <button onClick={() => signOut()} className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition">Sign out</button>
             </>
           ) : (
-            <button onClick={() => signIn()} className="px-2 py-1 bg-green-500 text-white rounded text-sm">Sign in</button>
+                <button onClick={() => signIn()} className="px-2 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition">Sign in</button>
           )}
-
-
           <button
             onClick={() => switchLang('sr')}
             className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium"
@@ -145,9 +113,8 @@ const Navbar = () => {
           >
             EN
           </button>
-
         </div>
-      </div>
+      </nav>
     </>
   )
 }
