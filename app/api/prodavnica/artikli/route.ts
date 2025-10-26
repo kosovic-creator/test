@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-// prilagodi na svoj auth konfiguraciju
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/options"; // prilagodi na svoj auth konfiguraciju
 
 interface SessionUser {
   id: number;

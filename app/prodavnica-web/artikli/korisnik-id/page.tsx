@@ -59,7 +59,7 @@ const ArtikliPage = () => {
         fetchArtikli();
     }, [lang, session, searchParams]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/prodavnica/prodavnica-web/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
+        const response = await fetch(`/api/prodavnica/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
         setError(false);
         setSuccess(true);
