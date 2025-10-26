@@ -27,6 +27,8 @@ model Artikal {
   id         Int       @id @default(autoincrement())
   naziv      String
   opis       String?
+  kolicina   Int       @default(0)
+  cena       Float     @default(0)
   korisnikId Int
   korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
   korpa     Korpa[]

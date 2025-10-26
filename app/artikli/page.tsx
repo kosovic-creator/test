@@ -28,7 +28,7 @@ const ArtikliPage = () => {
             if (session?.user.id) {
                 try {
                 // updated to match API route under /api/artikli
-                    const response = await fetch(`/api/artikli?lang=${lang}`);
+                    const response = await fetch(`/api/prodavnica/artikli?lang=${lang}`);
                     if (!response.ok) {
                         console.error('Failed to fetch artikli data', response.status, response.statusText);
                         setError(true);
@@ -47,7 +47,7 @@ const ArtikliPage = () => {
         fetchArtikli();
     }, [lang, session]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
+        const response = await fetch(`/api/prodavnica/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
         setError(false);
         setSuccess(true);

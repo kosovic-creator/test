@@ -38,7 +38,7 @@ const ArtikliPage = () => {
                         param = email ? `korisnikEmail=${encodeURIComponent(email)}` : `korisnikId=${encodeURIComponent(session!.user.id as string)}`;
                     }
                     // (debug log removed)
-                    const response = await fetch(`/api/artikli/filter?lang=${lang}&${param}`);
+                    const response = await fetch(`/api/prodavnica/artikli/filter?lang=${lang}&${param}`);
                     if (!response.ok) {
                         console.error('Failed to fetch artikli data', response.status, response.statusText);
                         setError(true);
@@ -59,7 +59,7 @@ const ArtikliPage = () => {
         fetchArtikli();
     }, [lang, session, searchParams]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
+        const response = await fetch(`/api/prodavnica/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
         setError(false);
         setSuccess(true);

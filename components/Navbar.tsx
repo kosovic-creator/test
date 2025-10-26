@@ -30,7 +30,7 @@ const Navbar = () => {
         <ul className="flex items-center space-x-4">
           <li className="mr-32"><Link href="/"><span className="home flex items-center"><Home size={20} /></span></Link></li>
           <li><Link href="/korisnici"><span className="home text-gray-700 hover:text-blue-600 transition">{t('korisnik')}</span></Link></li>
-          <li className="home text-gray-700 hover:text-blue-600 transition">{t('artikli')}</li>
+          <li className="home text-gray-700 hover:text-blue-600 transition">{t('web_prodavnica')}</li>
           <li className="relative">
             <div
               className="cursor-pointer inline-block relative"
@@ -49,7 +49,7 @@ const Navbar = () => {
                 style={{ display: 'none' }}
               >
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/artikli">Web Prodavnica</Link>
+                  <Link href="/artikli">Artikli</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/artikli/korisnik-id">Artikli id od sessije</Link>
