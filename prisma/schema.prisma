@@ -19,6 +19,7 @@ model Korisnik {
   ime       String
   password  String?
   artikli   Artikal[]
+  korpe     Korpa[]   // Dodaj vezu: jedan korisnik može imati više korpi
   createdAt DateTime  @default(now())
 }
 
@@ -28,24 +29,22 @@ model Artikal {
   opis       String?
   korisnikId Int
   korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
+  korpa     Korpa[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
-  posts Post[] // Veza: jedan korisnik ima mnogo postova
+model Korpa {
+  id        Int       @id @default(autoincrement())
+  korisnikId Int
+  artikalId  Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
+  artikal    Artikal?  @relation(fields: [artikalId], references: [id])
+  @@ unique([korisnikId, artikalId]) // kompozitni ključ = više kolona koje zajedno formiraju jedinstven identifikator reda, sprečava duplikate
 }
 
-model Post {
-  id       Int    @id @default(autoincrement())
-  title    String
-  content  String
-  authorId Int
-  author   User   @relation(fields: [authorId], references: [id]) // Svaki post pripada jednom korisniku
-}
 model Account {
   id      Int     @id @default(autoincrement())
   email   String  @unique

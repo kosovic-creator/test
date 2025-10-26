@@ -5,11 +5,11 @@ import MyContext from "@/components/MyContext"; // Adjust the path if needed
 const Child = () => {
   const context = useContext(MyContext);
 
-  // React.useEffect(() => {
-  //   if (context) {
-  //     context.setValue('nova vrednost');
-  //   }
-  // }, [context]);
+  React.useEffect(() => {
+    if (context) {
+      context.setValue('nova vrednost');
+    }
+  }, [context]);
 
 
 
