@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       // Create new item
       stavkaKorpe = await prisma.korpa.create({
         data: { korisnikId: korisnikIDNum, artikalId: artikalIDNum, kolicina: kolicinaNum },
-        // include: { artikal: true, korisnik: true },
+        include: { artikal: true, korisnik: true },
       });
     }
 
