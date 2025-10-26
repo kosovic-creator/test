@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 model Korisnik {
   id        Int       @id @default(autoincrement())
@@ -40,7 +41,7 @@ model Korpa {
   id        Int       @id @default(autoincrement())
   korisnikId Int
   artikalId  Int?
-  kolicina  Int       @default(1) // Dodata kolona kolicina
+  kolicina   Int       @default(1) // Dodata kolona kolicina
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
@@ -49,7 +50,15 @@ model Korpa {
 }
 
 model Account {
-  id      Int     @id @default(autoincrement())
-  email   String  @unique
-  balance Float   @default(0) // saldo na računu može biti decimalan broj
+  id        Int          @id @default(autoincrement())
+  email     String       @unique
+  balance   Float        @default(0) // saldo na računu može biti decimalan broj
+  transactions Transaction[]
+}
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  amount      Float    // iznos transakcije može biti decimalan broj
+  timestamp   DateTime @default(now())
+  accountId   Int
+  account     Account  @relation(fields: [accountId], references: [id])
 }
