@@ -49,10 +49,13 @@ const Navbar = () => {
                 style={{ display: 'none' }}
               >
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/artikli">Artikli</Link>
+                  <Link href="/prodavnica-web/artikli">Artikli</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/artikli/korisnik-id">Artikli id od sessije</Link>
+                  <Link href="/prodavnica-web/artikli/korisnik-id">Artikli id od sessije</Link>
+                </li>
+                 <li className="px-4 py-2 hover:bg-gray-100 transition">
+                  <Link href="/prodavnica-web/korpa">Korpa</Link>
                 </li>
               </ul>
             </div>

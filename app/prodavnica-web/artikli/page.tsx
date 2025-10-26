@@ -47,7 +47,7 @@ const ArtikliPage = () => {
         fetchArtikli();
     }, [lang, session]);
     const handleDelete = async (id: string) => {
-        const response = await fetch(`/api/prodavnica/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
+        const response = await fetch(`/api/prodavnica/prodavnica-web/artikli/${id}`, { method: 'DELETE', credentials: 'include' });
         const data = await response.json();
         setError(false);
         setSuccess(true);
@@ -59,14 +59,14 @@ const ArtikliPage = () => {
 
     const handleEdit = (artikal: Artikal) => {
         // navigate to edit page; form state removed since it's unused here
-        router.push(`/artikli/izmjeni/${artikal.id}`);
+        router.push(`/prodavnica-web/artikli/izmjeni/${artikal.id}`);
     };
 
     return (
         <div className="max-w-5xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
             <button
-                onClick={() => router.push('/artikli/dodaj')}
+                onClick={() => router.push('/prodavnica-web/artikli/dodaj')}
                 className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
             >
                 {t('create')}
@@ -101,7 +101,7 @@ const ArtikliPage = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => router.push(`/artikli/${artikal.id}`)}
+                                        onClick={() => router.push(`/prodavnica-web/artikli/${artikal.id}`)}
                                         className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
                                     >
                                         {t('details')}

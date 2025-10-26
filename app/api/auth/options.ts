@@ -20,21 +20,39 @@ export const authOptions: NextAuthOptions = {
         const isValid = await compare(password, user.password)
         if (!isValid) return null
         // NextAuth expects an object with at least an `id` and `email`
-        return { id: user.id.toString(), email: user.email, name: user.ime }
+        return { id: user.id, email: user.email, name: user.ime }
       },
     }),
+    // Dodaj ovdje OAuth providere ako koristiš (Google, Facebook, itd.)
   ],
   session: {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.id = user.id; // doda id u token
+    async jwt({ token, user, account, profile }) {
+      // Ako je user iz CredentialsProvider, id je Int
+      if (user) {
+        token.id = user.id;
+      }
+      // Ako je OAuth provider, pronađi ili kreiraj korisnika u bazi po emailu
+      if (account && profile && profile.email) {
+        let dbUser = await prisma.korisnik.findUnique({ where: { email: profile.email } });
+        if (!dbUser) {
+          dbUser = await prisma.korisnik.create({
+            data: {
+              email: profile.email,
+              ime: profile.name || profile.email,
+              password: '', // prazno jer OAuth
+            },
+          });
+        }
+        token.id = dbUser.id;
+      }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string; // prosledi id ka klijentu
+        session.user.id = token.id as number; // Int iz baze
       }
       return session;
     },
