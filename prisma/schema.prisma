@@ -40,6 +40,7 @@ model Korpa {
   id        Int       @id @default(autoincrement())
   korisnikId Int
   artikalId  Int?
+  kolicina  Int       @default(1) // Dodata kolona kolicina
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   korisnik   Korisnik  @relation(fields: [korisnikId], references: [id])
