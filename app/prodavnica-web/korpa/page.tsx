@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 type StavkaKorpe = {
   id: string;
   artikal: {
+    id: string;
     naziv: string;
   };
   kolicina: number;
@@ -28,6 +29,27 @@ const KorpaPage = () => {
         });
     }, [session]);
 
+    const handleDelete = (artikalId: string) => {
+        if (!session) return;
+
+        fetch(`/api/prodavnica/korpa`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            korisnikId: session.user.id,
+            artikalId,
+          }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            // obradi odgovor nakon brisanja
+            setData(prevData => prevData.filter(stavka => stavka.artikal.id !== artikalId));
+            console.log(data);
+        });
+    };
+
     return (
       <div>
         <div>KorpaPage</div>
@@ -36,6 +58,7 @@ const KorpaPage = () => {
             {data.map((stavka: StavkaKorpe) => (
               <li key={stavka.id}>
                 {stavka.artikal.naziv} - Količina: {stavka.kolicina}
+                <button onClick={() => handleDelete(stavka.artikal.id)}>Obriši</button>
               </li>
             ))}
           </ul>

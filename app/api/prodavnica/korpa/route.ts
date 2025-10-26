@@ -20,23 +20,22 @@ export async function GET(req: Request) {
   }
 }
 
-// export async function DELETE(req: Request) {
-//   try {
-//       const session = await getServerSession(authOptions);
-//       const korisnikId = session?.user?.id;
-//       const id = typeof korisnikId === 'string' ? Number(korisnikId) : korisnikId;
-//       const data = await req.json();
-//       const { artikalId } = data;
+export async function DELETE(req: Request) {
+  try {
 
-//       if (!id || !artikalId)
-//       return NextResponse.json({ error: "Nedostaju podaci." }, { status: 400 });
+      const data = await req.json();
+      const { korisnikId, artikalId } = data;
+      const id = Number(korisnikId);
 
-//     await prisma.korpa.deleteMany({
-//         where: { korisnikId: id, artikalId: Number(artikalId) },
-//     });
+      if (!id || !artikalId)
+      return NextResponse.json({ error: "Nedostaju podaci." }, { status: 400 });
 
-//       return NextResponse.json({ message: "Stavka izbrisana iz korpe." });
-//   } catch {
-//       return NextResponse.json({ error: "Greška pri brisanju iz korpe." }, { status: 500 });
-//   }
-//   }
+    await prisma.korpa.deleteMany({
+        where: { korisnikId: id, artikalId: Number(artikalId) },
+    });
+
+      return NextResponse.json({ message: "Stavka izbrisana iz korpe." });
+  } catch {
+      return NextResponse.json({ error: "Greška pri brisanju iz korpe." }, { status: 500 });
+  }
+  }
