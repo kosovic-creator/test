@@ -29,7 +29,7 @@ async function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
 
   try {
-    const res = await fetch("/api/artikli", {
+    const res = await fetch("/api/prodavnica/artikli", {
       method: "POST",
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ async function handleSubmit(e: React.FormEvent) {
 
         setPoruka("Artikal uspešno dodat");
       setTimeout(() => {
-        router.push("/artikli");
+        router.push("/prodavnica-web/artikli");
       }, 4000);
     } else {
       setPoruka(data.error || "Greška");

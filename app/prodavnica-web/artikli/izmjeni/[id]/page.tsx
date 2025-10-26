@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-
+import { useRouter } from "next/navigation";
 
 export default function IzmeniArtikal() {
   const params = useParams();
@@ -12,13 +12,14 @@ const { t } = useTranslation("artikli");
   const [naziv, setNaziv] = useState("");
   const [opis, setOpis] = useState("");
   const [poruka, setPoruka] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (!artikalId) return;
 
     async function fetchArtikal() {
       try {
-        const res = await fetch(`/api/prodavnica/prodavnica-web/artikli/${artikalId}`, { credentials: 'include' });
+        const res = await fetch(`/api/prodavnica/artikli/${artikalId}`, { credentials: 'include' });
         const data = await res.json();
         if (res.ok) {
           setNaziv(data.naziv);
@@ -39,7 +40,7 @@ const { t } = useTranslation("artikli");
     if (!artikalId) return;
 
     try {
-      const res = await fetch(`/api/prodavnica/prodavnica-web/artikli/${artikalId}`, {
+      const res = await fetch(`/api/prodavnica/artikli/${artikalId}`, {
         method: "PUT",
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
@@ -50,6 +51,7 @@ const { t } = useTranslation("artikli");
 
       if (res.ok) {
         setPoruka(t('updateSuccess'));
+        router.push("/prodavnica-web/artikli");
       } else {
         setPoruka(data.error || t('error'));
       }
