@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import MyContext from "@/components/MyContext";
+
 
 type StavkaKorpe = {
     id: number;
@@ -13,11 +13,13 @@ type StavkaKorpe = {
     kolicina: number;
 };
 
+
+
 const KorpaPage = () => {
     const { data: session } = useSession();
     const [data, setData] = useState<StavkaKorpe[]>([]);
     const router = useRouter();
-    const context = React.useContext(MyContext);
+
     useEffect(() => {
         if (!session) return;
 
@@ -26,12 +28,13 @@ const KorpaPage = () => {
             .then(data => setData(data));
     }, [session]);
 
-    useEffect(() => {
-        if (context) {
-            const totalKolicina = data.reduce((sum, item) => sum + item.kolicina, 0);
-            context.setValue(totalKolicina.toString());
-        }
-    }, [data, context]);
+    const fetchKorpa = () => {
+        if (!session) return;
+        fetch(`/api/prodavnica/korpa?korisnikId=${session.user.id}`)
+            .then(res => res.json())
+            .then(data => setData(data));
+    };
+
     const handleDelete = (artikalId: number) => {
         if (!session) return;
 
@@ -45,7 +48,44 @@ const KorpaPage = () => {
         })
             .then(res => res.json())
             .then(() => {
-                setData(prev => prev.filter(s => s.artikal.id !== artikalId));
+                fetchKorpa();
+                window.dispatchEvent(new Event('korpa-updated'));
+            });
+    };
+    const handleIncrease = (artikalId: number) => {
+        if (!session) return;
+
+        fetch(`/api/prodavnica/korpa`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                korisnikId: session.user.id,
+                artikalId,
+                kolicina: 1,
+            }),
+        })
+            .then(res => res.json())
+            .then(() => {
+                fetchKorpa();
+                window.dispatchEvent(new Event('korpa-updated'));
+            });
+    };
+    const handleDecrease = (artikalId: number) => {
+        if (!session) return;
+
+        fetch(`/api/prodavnica/korpa`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                korisnikId: session.user.id,
+                artikalId,
+                kolicina: 1,
+            }),
+        })
+            .then(res => res.json())
+            .then(() => {
+                fetchKorpa();
+                window.dispatchEvent(new Event('korpa-updated'));
             });
     };
 
@@ -59,13 +99,6 @@ const KorpaPage = () => {
             </h1>
             <button
                 onClick={() => {
-                    // if (session) {
-                    //     // Zamijeni sa stvarnim vrijednostima
-                    //     const artikalId = 1;
-                    //     const korisnikId = Number(session.user.id);
-                    //     const kolicina = 1;
-                    //     handleAdd(artikalId, korisnikId, kolicina);
-                    // }
                     router.push('/prodavnica-web/korpa/dodaj');
                 }}
             >
@@ -101,7 +134,19 @@ const KorpaPage = () => {
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-700">
                                         {stavka.kolicina}
                                     </td>
-                                    <td className="px-6 py-4 border-b border-gray-200">
+                                    <td className="px-6 py-4 border-b border-gray-200 flex gap-2">
+                                        <button
+                                            onClick={() => handleDecrease(stavka.artikal.id)}
+                                            className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1.5 px-3 rounded-md transition-colors"
+                                        >
+                                            -
+                                        </button>
+                                        <button
+                                            onClick={() => handleIncrease(stavka.artikal.id)}
+                                            className="bg-green-500 hover:bg-green-600 text-white font-medium py-1.5 px-3 rounded-md transition-colors"
+                                        >
+                                            +
+                                        </button>
                                         <button
                                             onClick={() => handleDelete(stavka.artikal.id)}
                                             className="bg-red-500 hover:bg-red-600 text-white font-medium py-1.5 px-4 rounded-md transition-colors"

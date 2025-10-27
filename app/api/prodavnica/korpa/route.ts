@@ -1,3 +1,57 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export async function PATCH(req: Request) {
+  try {
+    const data = await req.json();
+    const { korisnikId, artikalId, kolicina } = data;
+    const korisnikIDNum = Number(korisnikId);
+    const artikalIDNum = Number(artikalId);
+    const kolicinaNum = Number(kolicina) || 1;
+
+    if (!korisnikId || !artikalId || isNaN(korisnikIDNum) || isNaN(artikalIDNum) || korisnikIDNum <= 0 || artikalIDNum <= 0)
+      return NextResponse.json({ error: "Nedostaju ili neispravni podaci." }, { status: 400 });
+
+    const existing = await prisma.korpa.findUnique({
+      where: {
+        korisnikId_artikalId: {
+          korisnikId: korisnikIDNum,
+          artikalId: artikalIDNum
+        }
+      }
+    });
+
+    if (!existing)
+      return NextResponse.json({ error: "Stavka ne postoji u korpi." }, { status: 404 });
+
+    if (existing.kolicina > kolicinaNum) {
+      // Smanji količinu
+      const updated = await prisma.korpa.update({
+        where: {
+          korisnikId_artikalId: {
+            korisnikId: korisnikIDNum,
+            artikalId: artikalIDNum
+          }
+        },
+        data: {
+          kolicina: existing.kolicina - kolicinaNum
+        }
+      });
+      return NextResponse.json(updated);
+    } else {
+      // Ako je količina 1 ili manje, obriši stavku
+      await prisma.korpa.delete({
+        where: {
+          korisnikId_artikalId: {
+            korisnikId: korisnikIDNum,
+            artikalId: artikalIDNum
+          }
+        }
+      });
+      return NextResponse.json({ message: "Stavka izbrisana iz korpe." });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Greška pri smanjenju količine." }, { status: 500 });
+  }
+}
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
