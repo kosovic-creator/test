@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import MyContext from "@/components/MyContext";
 
 type StavkaKorpe = {
     id: number;
@@ -16,6 +17,7 @@ const KorpaPage = () => {
     const { data: session } = useSession();
     const [data, setData] = useState<StavkaKorpe[]>([]);
     const router = useRouter();
+    const context = React.useContext(MyContext);
     useEffect(() => {
         if (!session) return;
 
@@ -24,6 +26,12 @@ const KorpaPage = () => {
             .then(data => setData(data));
     }, [session]);
 
+    useEffect(() => {
+        if (context) {
+            const totalKolicina = data.reduce((sum, item) => sum + item.kolicina, 0);
+            context.setValue(totalKolicina.toString());
+        }
+    }, [data, context]);
     const handleDelete = (artikalId: number) => {
         if (!session) return;
 

@@ -13,7 +13,8 @@ const MyContext = createContext<MyContextType | null>(null);
 
 // 3. Provider komponenta koja obezbeđuje vrednost konteksta
 export const MyProvider = ({ children }: { children: ReactNode }) => {
-  const [value, setValue] = useState('abba'); // stanje koje delimo
+  const [value, setValue] = useState<string>('');
+
   useEffect(() => {
     // Ako u URL-u postoji ?lang=, postavi i18n jezik na klijentu
     if (typeof window !== 'undefined') {
