@@ -1,11 +1,12 @@
 "use client"
 
-import React, { ReactNode, useEffect, useContext } from 'react';
+import React, { ReactNode, useEffect, useContext, useState } from 'react';
 import { MyProvider } from './MyContext';
 import ToastProvider from './ToastProvider';
 import { SessionProvider, useSession } from 'next-auth/react';
 import Navbar from './Navbar';
 import MyContext from './MyContext';
+
 
 type StavkaKorpe = {
   id: number;
@@ -19,6 +20,7 @@ type StavkaKorpe = {
 function KorpaContextUpdater() {
   const { data: session } = useSession();
   const context = useContext(MyContext);
+  const [data, setData] = useState<StavkaKorpe[]>([]);
 
   useEffect(() => {
     if (!session || !context) return;  // Ako nema sesije ili konteksta, ne radi ništa
@@ -28,6 +30,7 @@ function KorpaContextUpdater() {
       fetch(`/api/prodavnica/korpa?korisnikId=${session.user.id}`)
         .then(res => res.json())
         .then((data: StavkaKorpe[]) => {
+          setData(data);
           // Zbroj količina svih stavki u korpi
           const totalKolicina = data.reduce((sum, item) => sum + item.kolicina, 0);
           // Postavi brojka u kontekst da se može koristiti u drugim dijelovima aplikacije
@@ -39,14 +42,14 @@ function KorpaContextUpdater() {
 
     // Dodaj listener na globalni window koji će slušati 'korpa-updated' događaj
     // svaki put kad se on dogodi poziva fetchKorpa da osveži stanje korpe
-    window.addEventListener('korpa-updated', fetchKorpa);
+    // window.addEventListener('korpa-updated', fetchKorpa);
 
-    // Cleanup funkcija koja se poziva prilikom unmountovanja ili promjene dependencija
-    // - uklanja event listener da se ne bi acumirale višestruke funkcije
-    return () => {
-      window.removeEventListener('korpa-updated', fetchKorpa);
-    };
-  }, [session, context]);
+    // // Cleanup funkcija koja se poziva prilikom unmountovanja ili promjene dependencija
+    // // - uklanja event listener da se ne bi acumirale višestruke funkcije
+    // return () => {
+    //   window.removeEventListener('korpa-updated', fetchKorpa);
+    // };
+  }, [session, context, data]);
 
   return null;
 }
