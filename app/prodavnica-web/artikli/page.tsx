@@ -61,6 +61,9 @@ const ArtikliPage = () => {
         // navigate to edit page; form state removed since it's unused here
         router.push(`/prodavnica-web/artikli/izmjeni/${artikal.id}`);
     };
+    const handleAddKorpa = (artikalId: string) => {
+        router.push(`/prodavnica-web/korpa/dodaj/${artikalId}`);
+    };
 
     return (
         <div className="max-w-5xl mx-auto p-6">
@@ -112,6 +115,13 @@ const ArtikliPage = () => {
                                         className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
                                     >
                                         {t('delete')}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleAddKorpa(artikal.id)}
+                                        className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
+                                    >
+                                        {t('add-to-cart')}
                                     </button>
                                 </td>
                             </tr>

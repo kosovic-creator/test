@@ -35,8 +35,8 @@ function SignInPage() {
         <div className="flex items-center justify-between">
           <FormButton type="submit" loading={form.submitting}>Sign in</FormButton>
           <div>
-            <a href="/change-password" className="text-sm text-sky-600 hover:underline mr-4">Change password</a>
-            <Link href="/register" className="text-sm text-sky-600 hover:underline">Register</Link>
+            <a href="/auth/change-password" className="text-sm text-sky-600 hover:underline mr-4">Change password</a>
+            <Link href="/auth/register" className="text-sm text-sky-600 hover:underline">Register</Link>
           </div>
         </div>
       </form>

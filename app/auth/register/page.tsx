@@ -41,7 +41,7 @@ export default function RegisterPage(){
       }
       // sign-in failed (or returned undefined) -> show success toast for registration and redirect to signin
       addToast({ type: 'success', message: 'Registration successful. Please sign in.' })
-      router.push('/signin')
+      router.push('/auth/signin')
     }
   })
 

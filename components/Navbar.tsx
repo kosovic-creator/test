@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import Link from 'next/link'
 import React, { useContext } from "react";
@@ -6,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/app/i18n/config';
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { Home } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const context = useContext(MyContext);
   const { t } = useTranslation('common');
   const { data: session, status } = useSession()
+  const router = useRouter();
 
   const switchLang = async (lang: string) => {
     try {
@@ -52,9 +55,10 @@ const Navbar = () => {
                   <Link href="/prodavnica-web/artikli">Artikli</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/prodavnica-web/artikli/korisnik-id">Artikli id od sessije</Link>
+                  <Link href="/prodavnica-web/artikli/korisnik-id"> {session?.user?.name ? `Artikli ${session?.user?.name}` : "Artikli"}
+                  </Link>
                 </li>
-                 <li className="px-4 py-2 hover:bg-gray-100 transition">
+                <li className="px-4 py-2 hover:bg-gray-100 transition">
                   <Link href="/prodavnica-web/korpa">Korpa</Link>
                 </li>
               </ul>
@@ -96,18 +100,22 @@ const Navbar = () => {
             <div className="text-gray-500">Loading...</div>
           ) : session?.user ? (
             <>
-                <span className="mr-2 text-gray-700">Hi, {session.user.name ?? session.user.email}</span>
-                <button onClick={() => signOut()} className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition">Sign out</button>
+              <span className="mr-2 text-gray-700">Hi, {session.user.name ?? session.user.email}</span>
+              <button onClick={() => signOut()} className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition">Sign out</button>
             </>
           ) : (
-                <button onClick={() => signIn()} className="px-2 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition">Sign in</button>
+            <>
+              <button onClick={() => router.push('/auth/signin')} className="px-2 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600 transition">Sign in</button>
+              <button onClick={() => router.push('/auth/register')} className="px-2 py-1 bg-purple-500 text-white rounded text-sm hover:bg-purple-600 transition">Register</button>
+            </>
           )}
+
           <button
             onClick={() => switchLang('sr')}
             className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium"
             aria-label="srpski"
           >
-            SR
+            CG
           </button>
           <button
             onClick={() => switchLang('en')}
