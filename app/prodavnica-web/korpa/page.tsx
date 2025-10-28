@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -97,7 +98,7 @@ const KorpaPage = () => {
             <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
                 Korpa
             </h1>
-          
+
             {data && data.length > 0 ? (
                 <div className="overflow-x-auto shadow-md rounded-lg">
                     <table className="min-w-full bg-white border border-gray-200">

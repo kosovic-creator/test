@@ -135,12 +135,21 @@ const ArtikliPage = () => {
                                         {t('details')}
                                     </button>
 
+
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDelete(artikal.id)}
+                                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
+                                    >
+                                        {t('delete')}
+                                    </button>
+
                                     <button
                                         type="button"
                                         onClick={() => handleAddKorpa(Number(artikal.id))}
                                         className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
                                     >
-                                        {t('add_to-cart')}
+                                        {t('add_to_cart')}
                                     </button>
                                 </td>
                             </tr>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import React, { ReactNode, useEffect, useContext, useState } from 'react';
@@ -21,6 +22,8 @@ function KorpaContextUpdater() {
   const { data: session } = useSession();
   const context = useContext(MyContext);
   // const [data, setData] = useState<StavkaKorpe[]>([]);
+
+
 
   useEffect(() => {
     if (!session || !context) return;  // Ako nema sesije ili konteksta, ne radi ništa
@@ -54,13 +57,25 @@ function KorpaContextUpdater() {
   return null;
 }
 
-
+export function Prozor() {
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('Veličina prozora je promijenjena!');
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  return null;
+}
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <MyProvider>
       <SessionProvider>
         <ToastProvider>
           <KorpaContextUpdater />
+          <Prozor />
           <Navbar />
           <div style={{ padding: 8 }}>{/* LanguageSwitcher placeholder */}</div>
           {children}
