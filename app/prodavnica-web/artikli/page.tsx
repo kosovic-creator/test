@@ -23,6 +23,7 @@ const ArtikliPage = () => {
     const [success, setSuccess] = useState<boolean | null>(null);
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const lang = searchParams?.get('lang') || 'sr';
+    const korisnikId = session?.user?.id;
     useEffect(() => {
         const fetchArtikli = async () => {
             if (session?.user.id) {
@@ -61,9 +62,23 @@ const ArtikliPage = () => {
         // navigate to edit page; form state removed since it's unused here
         router.push(`/prodavnica-web/artikli/izmjeni/${artikal.id}`);
     };
-    const handleAddKorpa = (artikalId: string) => {
-        router.push(`/prodavnica-web/korpa/dodaj/${artikalId}`);
+    const handleAddKorpa = (artikalId: number) => {
+        fetch('/api/prodavnica/korpa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                korisnikId,
+                artikalId,
+                  kolicina: 1,
+            }),
+        })
+            .then(res => res.json())
+            .then(() => {
+                // fetchKorpa();
+                window.dispatchEvent(new Event('korpa-updated'));
+            });
     };
+
 
     return (
         <div className="max-w-5xl mx-auto p-6">
@@ -118,7 +133,7 @@ const ArtikliPage = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => handleAddKorpa(artikal.id)}
+                                        onClick={() => handleAddKorpa(Number(artikal.id))}
                                         className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
                                     >
                                         {t('add-to-cart')}
