@@ -23,6 +23,7 @@ const ArtikliPage = () => {
     const [success, setSuccess] = useState<boolean | null>(null);
     const searchParams = React.useMemo(() => (typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null), []);
     const lang = searchParams?.get('lang') || 'sr';
+    const korisnikId = session?.user?.id;
     useEffect(() => {
         const fetchArtikli = async () => {
             const queryKorisnikId = searchParams?.get('korisnikId');
@@ -74,6 +75,21 @@ const ArtikliPage = () => {
         router.push(`/prodavnica-web/artikli/izmjeni/${artikal.id}`);
     };
 
+     const handleAddKorpa = (artikalId: number) => {
+        fetch('/api/prodavnica/korpa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                korisnikId,
+                artikalId,
+                  kolicina: 1,
+            }),
+        })
+            .then(res => res.json())
+            .then(() => {
+                window.dispatchEvent(new Event('korpa-updated'));
+            });
+    };
     return (
         <div className="max-w-5xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
@@ -118,12 +134,13 @@ const ArtikliPage = () => {
                                     >
                                         {t('details')}
                                     </button>
+
                                     <button
                                         type="button"
-                                        onClick={() => handleDelete(artikal.id)}
-                                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
+                                        onClick={() => handleAddKorpa(Number(artikal.id))}
+                                        className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
                                     >
-                                        {t('delete')}
+                                        {t('add_to-cart')}
                                     </button>
                                 </td>
                             </tr>
