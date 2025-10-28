@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import Greeting from '@/components/Greeting';
+
 import React, { useEffect } from 'react'
 
 
@@ -30,7 +30,7 @@ const OdgovorPage = () => {
       <p>Odgovor stranica</p>
       <a >Pozovi API odgovor</a>
       {data.odgovor && <p>{data.odgovor.message}</p>}
-      <Greeting name="Marko" />
+     
     </div>
   )
 }
