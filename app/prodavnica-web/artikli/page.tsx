@@ -4,13 +4,14 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 
+
 type Artikal = {
     id: string;
     naziv: string;
     opis?: string;
 
     korisnik?: {
-       id: number;
+        id: number;
     }
 };
 
@@ -28,7 +29,7 @@ const ArtikliPage = () => {
         const fetchArtikli = async () => {
             if (session?.user.id) {
                 try {
-                // updated to match API route under /api/artikli
+                    // updated to match API route under /api/artikli
                     const response = await fetch(`/api/prodavnica/artikli?lang=${lang}`);
                     if (!response.ok) {
                         console.error('Failed to fetch artikli data', response.status, response.statusText);
@@ -69,7 +70,7 @@ const ArtikliPage = () => {
             body: JSON.stringify({
                 korisnikId,
                 artikalId,
-                  kolicina: 1,
+                kolicina: 1,
             }),
         })
             .then(res => res.json())
@@ -81,75 +82,79 @@ const ArtikliPage = () => {
 
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
-            <button
-                onClick={() => router.push('/prodavnica-web/artikli/dodaj')}
-                className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
-            >
-                {t('create')}
-            </button>
-            <div className="overflow-x-auto">
-                <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('name')}</th>
+        <>
+
+            <div className="max-w-5xl mx-auto p-6">
+
+                <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
+                <button
+                    onClick={() => router.push('/prodavnica-web/artikli/dodaj')}
+                    className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow"
+                >
+                    {t('create')}
+                </button>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('name')}</th>
 
 
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('description')}</th>
-                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('korisnik')}</th>
-                            <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">{t('actions')}</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {data.map((artikal) => (
-                            <tr key={artikal.id}>
-                                <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
-                                <td className="px-6 py-4 text-gray-900">{artikal.opis ?? ''}</td>
-
-
-                                <td className="px-6 py-4 text-gray-900">{artikal.korisnik ? <div className="id">{artikal.korisnik.id}</div> : ''}</td>
-                                <td className="px-6 py-4 text-center space-x-2">
-                                    <button
-                                        type="button"
-                                        onClick={() => handleEdit(artikal)}
-                                        className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
-                                    >
-                                        {t('edit')}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => router.push(`/prodavnica-web/artikli/${artikal.id}`)}
-                                        className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
-                                    >
-                                        {t('details')}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDelete(artikal.id)}
-                                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
-                                    >
-                                        {t('delete')}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleAddKorpa(Number(artikal.id))}
-                                        className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
-                                    >
-                                        {t('add-to-cart')}
-                                    </button>
-                                </td>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('description')}</th>
+                                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">{t('korisnik')}</th>
+                                <th className="px-6 py-3 text-center text-sm font-medium text-gray-700">{t('actions')}</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            {error && <div className="mt-4 text-red-600 font-semibold">Greška prilikom brisanja artikla.</div>}
-            {success && <div className="mt-4 text-green-600 font-semibold">Artikal uspješno obrisan.</div>}
-            <Suspense fallback={<div>Loading...</div>}>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {data.map((artikal) => (
+                                <tr key={artikal.id}>
+                                    <td className="px-6 py-4 text-gray-900">{artikal.naziv}</td>
+                                    <td className="px-6 py-4 text-gray-900">{artikal.opis ?? ''}</td>
 
-            </Suspense>
-        </div>
+
+                                    <td className="px-6 py-4 text-gray-900">{artikal.korisnik ? <div className="id">{artikal.korisnik.id}</div> : ''}</td>
+                                    <td className="px-6 py-4 text-center space-x-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleEdit(artikal)}
+                                            className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
+                                        >
+                                            {t('edit')}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => router.push(`/prodavnica-web/artikli/${artikal.id}`)}
+                                            className="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded text-sm font-semibold"
+                                        >
+                                            {t('details')}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDelete(artikal.id)}
+                                            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-semibold"
+                                        >
+                                            {t('delete')}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleAddKorpa(Number(artikal.id))}
+                                            className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm font-semibold"
+                                        >
+                                            {t('add-to-cart')}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {error && <div className="mt-4 text-red-600 font-semibold">Greška prilikom brisanja artikla.</div>}
+                {success && <div className="mt-4 text-green-600 font-semibold">Artikal uspješno obrisan.</div>}
+                <Suspense fallback={<div>Loading...</div>}>
+
+                </Suspense>
+            </div>
+        </>
     );
 }
 

@@ -76,7 +76,6 @@ export default function Providers({ children }: { children: ReactNode }) {
         <ToastProvider>
           <KorpaContextUpdater />
           <Prozor />
-          <Navbar />
           <div style={{ padding: 8 }}>{/* LanguageSwitcher placeholder */}</div>
           {children}
         </ToastProvider>
