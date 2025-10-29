@@ -6,15 +6,17 @@ const Uplata = () => {
   // const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
   const [amount, setAmount] = React.useState('');
-  const [result, setResult] = React.useState<string | null>(null);
+  // const [result, setResult] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [success, setSuccess] = React.useState<string | null>(null);
   const router = useRouter();
   const handleUplata = async (event: FormEvent) => {
     event.preventDefault();
     // Prvo validiraj da primalac postoji
     const korisnikRes = await fetch(`/api/banka/korisnik?email=${encodeURIComponent(to)}`);
     if (!korisnikRes.ok) {
-      const err = await korisnikRes.json();
-      setResult(err.message || 'Primalac ne postoji');
+      // const err = await korisnikRes.json();
+      setError( 'Primalac ne postoji');
       return;
     }
 
@@ -27,13 +29,18 @@ const Uplata = () => {
         amount,
       }),
     });
-    const data = await response.json();
-    setResult(data.message);
+    if (!response.ok) {
+
+      setError('Došlo je do greške prilikom uplate');
+      return;
+    }
+
+    setSuccess('Uplata uspešna');
     setAmount('');
     setTo('');
     setTimeout(() => {
       router.push('/banka');
-    }, 1500);
+    }, 3500);
   };
 
   return (
@@ -88,9 +95,11 @@ const Uplata = () => {
       Pošalji uplatu
     </button>
 
-    {result && (
-      <div className="text-center text-sm text-red-600 mt-4">{result}</div>
-    )}
+    {error ? (
+      <div className="text-center text-sm text-red-600 mt-4">{error}</div>
+    ) : success ? (
+      <div className="text-center text-sm text-green-600 mt-4">{success}</div>
+    ) : null}
   </form>
 </div>
   );

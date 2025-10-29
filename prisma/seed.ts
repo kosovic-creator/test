@@ -65,6 +65,19 @@ await prisma.artikal.create({
       korisnikId: 3,
     },
   });
+
+  await prisma.account.create({
+    data: {
+      email: 'ana@gmail.com',
+      balance: 1000.0,
+    },
+  });
+  await prisma.account.create({
+    data: {
+      email: 'drasko.kosovic@gmail.com',
+      balance: 2000.0,
+    },
+  });
   console.log('Seed podaci su uspješno dodani.');
 }
 
