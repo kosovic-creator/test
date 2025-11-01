@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
+import Loading from '@/app/loading';
 
 
 type Artikal = {
@@ -25,10 +26,13 @@ const ArtikliPage = () => {
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const lang = searchParams?.get('lang') || 'sr';
     const korisnikId = session?.user?.id;
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const fetchArtikli = async () => {
             if (session?.user.id) {
                 try {
+                    setLoading(true);
                     // updated to match API route under /api/artikli
                     const response = await fetch(`/api/prodavnica/artikli?lang=${lang}`);
                     if (!response.ok) {
@@ -38,6 +42,7 @@ const ArtikliPage = () => {
                     }
                     const artikliData = await response.json();
                     setData(artikliData);
+                    setLoading(false);
                     setError(false);
                     console.log('Fetched artikli data', artikliData);
                 } catch (err) {
@@ -83,7 +88,7 @@ const ArtikliPage = () => {
 
     return (
         <>
-
+            {loading ? <div><Loading /></div> : (
             <div className="max-w-5xl mx-auto p-6">
 
                 <h1 className="text-3xl font-bold mb-6 text-gray-900">{t('title')}</h1>
@@ -154,6 +159,7 @@ const ArtikliPage = () => {
 
                 </Suspense>
             </div>
+            )}
         </>
     );
 }
