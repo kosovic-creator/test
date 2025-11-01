@@ -6,7 +6,7 @@ import MyContext from './MyContext';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/app/i18n/config';
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { Home } from 'lucide-react';
+import { Home, ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
@@ -28,7 +28,10 @@ const Navbar = () => {
 
   return (
     <>
-      <p className="text-sm text-gray-500 mb-2">kontext: {context ? context.value : 'N/A'}</p>
+      <div className="flex items-center space-x-2 text-sm text-gray-600 mb-2 px-4 py-1">
+        <ShoppingCart size={16} />
+        <span>Korpa: {context ? context.value : '0'}</span>
+      </div>
       <nav className="border-b border-gray-300 py-2 px-4 flex justify-between items-center bg-white shadow-sm">
         <ul className="flex items-center space-x-4">
           <li className="mr-32"><Link href="/"><span className="home flex items-center"><Home size={20} /></span></Link></li>
@@ -64,36 +67,7 @@ const Navbar = () => {
               </ul>
             </div>
           </li>
-          <li className="home text-gray-700 hover:text-blue-600 transition">{t('banka')}</li>
-          <li className="relative">
-            <div
-              className="cursor-pointer inline-block relative"
-              onMouseEnter={e => {
-                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
-                if (menu) menu.style.display = 'block';
-              }}
-              onMouseLeave={e => {
-                const menu = (e.currentTarget.querySelector('.dropdown-menu') as HTMLElement);
-                if (menu) menu.style.display = 'none';
-              }}
-            >
-              <span className="px-2 py-1">▼</span>
-              <ul
-                className="dropdown-menu absolute top-full left-0 bg-white shadow-lg py-2 m-0 list-none min-w-[140px] z-50"
-                style={{ display: 'none' }}
-              >
-                <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/banka">Stanje</Link>
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/banka/transfer">Transferi</Link>
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/banka/uplata">Uplata</Link>
-                </li>
-              </ul>
-            </div>
-          </li>
+
         </ul>
         <div className="flex items-center space-x-2">
           {status === 'loading' ? (
