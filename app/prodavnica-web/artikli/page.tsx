@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Loading from '@/app/loading';
 
 
+
 type Artikal = {
     id: string;
     naziv: string;
@@ -147,6 +148,7 @@ const ArtikliPage = () => {
                                         >
                                             {t('add-to-cart')}
                                         </button>
+
                                     </td>
                                 </tr>
                             ))}
