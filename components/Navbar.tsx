@@ -55,14 +55,14 @@ const Navbar = () => {
                 style={{ display: 'none' }}
               >
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/prodavnica-web/artikli">Artikli</Link>
+                  <Link href="/artikli">Artikli</Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/prodavnica-web/artikli/korisnik-id"> {session?.user?.name ? `Artikli ${session?.user?.name}` : "Artikli"}
+                  <Link href="/artikli/korisnik-id"> {session?.user?.name ? `Artikli ${session?.user?.name}` : "Artikli"}
                   </Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 transition">
-                  <Link href="/prodavnica-web/korpa">Korpa</Link>
+                  <Link href="/korpa">Korpa</Link>
                 </li>
               </ul>
             </div>
